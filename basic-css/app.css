@@ -1,0 +1,26 @@
+body {
+	background: url(http://www.desktop-screens.com/data/out/120/3593466-universal-wallpapers.jpg); 
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+/*width
+height
+style
+*/
+
+li {
+	color: orange;
+}
+
+h1 {
+	color: #FF7000;  /* rgb in hexa - red green blue */
+	/*border-color: purple;
+	border-width: 5px;
+	border-style: solid;  /* dashed,*/
+	border: 2px solid white;
+}
+
+h4 {
+	color: #30A02A;
+} 
