@@ -13,10 +13,13 @@ var playerOneScore;
 var playerTwoScore;
 var maxScore;
 var isStop;
+var isToggle = false;
 
 function initialValues(){
 	playerOneScore = 1;
 	playerTwoScore = 1;
+	spanPlayerOne.textContent = playerOneScore - 1;
+	spanPlayerTwo.textContent = playerTwoScore - 1;
 	maxScore = 5;
 	isStop = false;
 	showOnUI();
@@ -54,8 +57,9 @@ function increaseByOne(num){
 function increaseScoreForPlayerOne(){
 	playerOneScore = increaseByOne(playerOneScore);
 	spanPlayerOne.textContent = playerOneScore - 1;
-	if (playerOneScore === (maxScore + 1)){
+	if (playerOneScore === (maxScore + 1) && (!isToggle)){
 		spanPlayerOne.classList.toggle("toGreen");
+		isToggle = true;
 	}
 	// console.log(playerOneScore);
 }
@@ -63,8 +67,9 @@ function increaseScoreForPlayerOne(){
 function increaseScoreForPlayerTwo(){
 	playerTwoScore = increaseByOne(playerTwoScore);
 	spanPlayerTwo.textContent = playerTwoScore -1 ;		
-	if (playerTwoScore === (maxScore + 1)){
+	if (playerTwoScore === (maxScore + 1) && (!isToggle)){
 		spanPlayerTwo.classList.toggle("toGreen");
+		isToggle = true;
 	}
 	// console.log(playerTwoScore);
 }
