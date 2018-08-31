@@ -13,42 +13,39 @@ var playerOneScore;
 var playerTwoScore;
 var maxScore;
 var isStop;
-var isToggle = false;
+var isToggle;
 
 function initialValues(){
-	playerOneScore = 1;
-	playerTwoScore = 1;
-	spanPlayerOne.textContent = playerOneScore - 1;
-	spanPlayerTwo.textContent = playerTwoScore - 1;
+	playerOneScore = 0;
+	playerTwoScore = 0;
+	spanPlayerOne.textContent = playerOneScore;
+	spanPlayerTwo.textContent = playerTwoScore;
 	maxScore = 5;
 	isStop = false;
-	showOnUI();
-}
-
-
-function showCurrentScore(){
-	// h1.textContent = (playerOneScore - 1) + " to " + (playerTwoScore -1);
-	h1.innerHTML = "<h1><span id=\"color1\">" + (playerOneScore - 1)+ "</span> to <span id=\"color2\">" + (playerTwoScore - 1) + "</span></h1>"
+	isToggle = false;
+	showMaxScore();
 }
 
 function showMaxScore(){
 	p.textContent = "Playing to: " + maxScore;
 }
 
-function showOnUI(){
-	// showCurrentScore();
-	showMaxScore();	
-}
 function getMaxScoreFromUI(){
-	maxScore = scoreInput.value;
+	maxScore = Number(scoreInput.value);
+	isStop = false;
+	isToggle = false;
+	console.log("Current maxScore = " + maxScore);
 }
 
 function increaseByOne(num){
 	var rel = 0;
-	if ((num <= maxScore || num === 0) && (!isStop) ){
+	if ((num < maxScore || num === 0) && (!isStop) ){
 		rel = num + 1;
+		if (rel === maxScore){
+			isStop = true;
+		}
 	} else {
-		rel = num;
+		rel = maxScore;
 		isStop = true;
 	}
 	return rel;
@@ -56,22 +53,20 @@ function increaseByOne(num){
 
 function increaseScoreForPlayerOne(){
 	playerOneScore = increaseByOne(playerOneScore);
-	spanPlayerOne.textContent = playerOneScore - 1;
-	if (playerOneScore === (maxScore + 1) && (!isToggle)){
+	spanPlayerOne.textContent = playerOneScore;	
+	if (isStop && (!isToggle)){
 		spanPlayerOne.classList.toggle("toGreen");
-		isToggle = true;
+		isToggle = true;		
 	}
-	// console.log(playerOneScore);
 }
 
 function increaseScoreForPlayerTwo(){
 	playerTwoScore = increaseByOne(playerTwoScore);
-	spanPlayerTwo.textContent = playerTwoScore -1 ;		
-	if (playerTwoScore === (maxScore + 1) && (!isToggle)){
+	spanPlayerTwo.textContent = playerTwoScore;		
+	if (isStop && (!isToggle)){
 		spanPlayerTwo.classList.toggle("toGreen");
-		isToggle = true;
+		isToggle = true;		
 	}
-	// console.log(playerTwoScore);
 }
 
 /////// main
@@ -81,31 +76,27 @@ initialValues();
 // modify max score
 scoreInput.addEventListener("click", function(){
 	getMaxScoreFromUI();
-	showOnUI();
+	showMaxScore();
 });
 
 
 // player One gets score
 btn_playerOne.addEventListener("click", function(){
 	increaseScoreForPlayerOne();
-	showOnUI();
+	showMaxScore();
 })
 
 // player One gets score
 btn_playerTwo.addEventListener("click", function(){
 	increaseScoreForPlayerTwo();
-	showOnUI();
+	showMaxScore();
 })
 
 // reset score
 btn_reset.addEventListener("click", function(){
 	initialValues();
 	scoreInput.value  = '';
-	showOnUI();
+	showMaxScore();
 	spanPlayerOne.classList.remove("toGreen");
 	spanPlayerTwo.classList.remove("toGreen");
 })
-
-
-
-
