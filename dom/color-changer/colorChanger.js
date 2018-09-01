@@ -1,7 +1,7 @@
 
 
 // function changeBtnBackground(){
-// 	var btn = document.querySelector("button");
+// 	var btn = document.querySelector("button"); //to make conflict
 // 	btn;
 
 // 	btn.setAttribute("isClick", false);
