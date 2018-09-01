@@ -3,3 +3,11 @@ https://unsplash.com/photos/ZvdDmDZSv7s
 
 
 https://fontawesome.com/icons?d=gallery
+
+
+######## CSS selector versus Xpath ########
+https://www.webdesignerdepot.com/2013/08/10-css-selectors-you-shouldnt-code-without/
+
+1. Get links of all events at https://developer.mozilla.org/en-US/docs/Web/Events
+tr td:nth-of-type(1) a
+//tr/td[1]//a
