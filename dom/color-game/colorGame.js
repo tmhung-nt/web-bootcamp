@@ -73,20 +73,20 @@ function reset(){
 function changeGameMode(flag){
 	isHardMode = flag;
 	reset(); //to create new colors and refresh html content 
-	var notHardModeCells = document.querySelectorAll(".notHardMode");
+	var notEasyModeCells = document.querySelectorAll(".notEasyMode");
 	if (!isHardMode){
 		// hide 3 last celss
 		for (var i = 0; i < numberOfColors; i++){
-			// notHardModeCells[i].style.background = "#232323";
-			notHardModeCells[i].style.display = "none";  //https://developer.mozilla.org/en-US/docs/Web/CSS/display
+			// notEasyModeCells[i].style.background = "#232323";
+			notEasyModeCells[i].style.display = "none";  //https://developer.mozilla.org/en-US/docs/Web/CSS/display
 		}
 		btnEasy.classList.add("selected");
 		btnHard.classList.remove("selected");
 	} else {
 		//enable all 6 cells
-		for (var i = 0; i < notHardModeCells.length; i++){
-			// notHardModeCells[i].style.background = "#232323";
-			notHardModeCells[i].style.display = "block"; //https://developer.mozilla.org/en-US/docs/Web/CSS/display
+		for (var i = 0; i < notEasyModeCells.length; i++){
+			// notEasyModeCells[i].style.background = "#232323";
+			notEasyModeCells[i].style.display = "block"; //https://developer.mozilla.org/en-US/docs/Web/CSS/display
 		}
 		btnEasy.classList.remove("selected");
 		btnHard.classList.add("selected");
