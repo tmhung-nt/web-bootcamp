@@ -33,9 +33,9 @@ function reset(){
 
 // main 
 numInput.addEventListener("change", function(){
-	winningScore = this.value;
-	winningScoreDisplay.textContent = Number(winningScore);
 	reset();
+	winningScore = Number(this.value);
+	winningScoreDisplay.textContent = winningScore;
 });
 
 p1Button.addEventListener("click", function(){
