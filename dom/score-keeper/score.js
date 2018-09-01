@@ -1,106 +1,75 @@
 // getting DOM elements
-var h1 = document.querySelector("h1");
-var p = document.querySelector("p");
 var scoreInput = document.querySelector("input");
-var btn_playerOne = document.querySelector("#playerOne");
-var btn_playerTwo = document.querySelector("#playerTwo");
+var btn_p1 = document.querySelector("#playerOne");
+var btn_p2 = document.querySelector("#playerTwo");
 var btn_reset = document.querySelector("#resetBtn");
-var spanPlayerOne = document.querySelector("span#color1");
-var spanPlayerTwo = document.querySelector("span#color2");
-var spanScore = document.querySelector("span#inputScore");
+var p1Display = document.querySelector("span#color1");
+var p2Display = document.querySelector("span#color2");
+var winningScoreDisplay = document.querySelector("span#inputScore");
 
 // initial values
-var playerOneScore;
-var playerTwoScore;
-var maxScore;
-var isStop;
-var isToggle;
+var p1Score;
+var p2Score;
+var winningScore;
+var gameOver;
 
+// initial values or reset to original values
 function initialValues(){
-	playerOneScore = 0;
-	playerTwoScore = 0;
-	spanPlayerOne.textContent = playerOneScore;
-	spanPlayerTwo.textContent = playerTwoScore;
-	maxScore = 5;
-	isStop = false;
-	isToggle = false;
-	showMaxScore();
+	p1Score = 0;
+	p2Score = 0;
+	p1Display.textContent = p1Score;
+	p2Display.textContent = p2Score;
+	winningScore = 5;
+	gameOver = false;
+	winningScoreDisplay.textContent = winningScore;
+	p1Display.classList.remove("winner");
+	p2Display.classList.remove("winner");
 }
 
-function showMaxScore(){
-	spanScore.textContent = maxScore;
-}
-
-function getMaxScoreFromUI(){
-	maxScore = Number(scoreInput.value);
-	isStop = false;
-	isToggle = false;
-	console.log("Current maxScore = " + maxScore);
-}
-
-function increaseByOne(num){
-	var rel = 0;
-	console.log("condition: " + (num < maxScore || num === 0) && (!isStop) );
-	if ((num < maxScore || num === 0) && (!isStop) ){
-		rel = num + 1;
-		if (rel === maxScore){
-			isStop = true;
-		}
-	} else {
-		rel = num;
-		isStop = true;
+function isGameOver(num){
+	if (num === winningScore){
+		gameOver = true;
 	}
-	return rel;
-}
-
-function increaseScoreForPlayerOne(){
-	playerOneScore = increaseByOne(playerOneScore);
-	spanPlayerOne.textContent = playerOneScore;	
-	if (isStop && (!isToggle)){
-		spanPlayerOne.classList.toggle("toGreen");
-		isToggle = true;		
-	}
-	console.log("increaseScoreForPlayerOne.isToggle: " + isToggle);
-}
-
-function increaseScoreForPlayerTwo(){
-	playerTwoScore = increaseByOne(playerTwoScore);
-	spanPlayerTwo.textContent = playerTwoScore;		
-	if (isStop && (!isToggle)){
-		spanPlayerTwo.classList.toggle("toGreen");
-		isToggle = true;		
-	}
-	console.log("increaseScoreForPlayerTwo.isToggle: " + isToggle);
 }
 
 /////// main
 
 initialValues();
 
-// modify max score
-scoreInput.addEventListener("click", function(){
-	getMaxScoreFromUI();
-	showMaxScore();
+// capture max score
+scoreInput.addEventListener("change", function(){
+	initialValues();  // reset values when user changes the input score
+	winningScore = Number(this.value);
+	winningScoreDisplay.textContent = winningScore;
 });
 
 
 // player One gets score
-btn_playerOne.addEventListener("click", function(){
-	increaseScoreForPlayerOne();
-	showMaxScore();
+btn_p1.addEventListener("click", function(){
+	if (!gameOver){
+		p1Score++;
+		isGameOver(p1Score);
+		if (gameOver){
+			p1Display.classList.add("winner");
+		}
+		p1Display.textContent = p1Score;
+	}
 })
 
 // player Two gets score
-btn_playerTwo.addEventListener("click", function(){
-	increaseScoreForPlayerTwo();
-	showMaxScore();
+btn_p2.addEventListener("click", function(){
+	if (!gameOver){
+		p2Score++;
+		isGameOver(p2Score);
+		if (gameOver){
+			p2Display.classList.add("winner");
+		}
+		p2Display.textContent = p2Score;
+	}
 })
 
 // reset score
 btn_reset.addEventListener("click", function(){
 	initialValues();
-	scoreInput.value  = '';
-	showMaxScore();
-	spanPlayerOne.classList.remove("toGreen");
-	spanPlayerTwo.classList.remove("toGreen");
-})
+	scoreInput.value = "";
+});

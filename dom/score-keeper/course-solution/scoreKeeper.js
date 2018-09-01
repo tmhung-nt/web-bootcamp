@@ -60,4 +60,7 @@ p2Button.addEventListener("click", function(){
 	}
 });
 
-resetButton.addEventListener("click", reset);
+resetButton.addEventListener("click", function(){
+	reset();
+	winningScoreDisplay.value = "";
+});
