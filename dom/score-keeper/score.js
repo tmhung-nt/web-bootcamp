@@ -7,6 +7,7 @@ var btn_playerTwo = document.querySelector("#playerTwo");
 var btn_reset = document.querySelector("#resetBtn");
 var spanPlayerOne = document.querySelector("span#color1");
 var spanPlayerTwo = document.querySelector("span#color2");
+var spanScore = document.querySelector("span#inputScore");
 
 // initial values
 var playerOneScore;
@@ -27,7 +28,7 @@ function initialValues(){
 }
 
 function showMaxScore(){
-	p.textContent = "Playing to: " + maxScore;
+	spanScore.textContent = maxScore;
 }
 
 function getMaxScoreFromUI(){
@@ -39,13 +40,14 @@ function getMaxScoreFromUI(){
 
 function increaseByOne(num){
 	var rel = 0;
+	console.log("condition: " + (num < maxScore || num === 0) && (!isStop) );
 	if ((num < maxScore || num === 0) && (!isStop) ){
 		rel = num + 1;
 		if (rel === maxScore){
 			isStop = true;
 		}
 	} else {
-		rel = maxScore;
+		rel = num;
 		isStop = true;
 	}
 	return rel;
@@ -58,6 +60,7 @@ function increaseScoreForPlayerOne(){
 		spanPlayerOne.classList.toggle("toGreen");
 		isToggle = true;		
 	}
+	console.log("increaseScoreForPlayerOne.isToggle: " + isToggle);
 }
 
 function increaseScoreForPlayerTwo(){
@@ -67,6 +70,7 @@ function increaseScoreForPlayerTwo(){
 		spanPlayerTwo.classList.toggle("toGreen");
 		isToggle = true;		
 	}
+	console.log("increaseScoreForPlayerTwo.isToggle: " + isToggle);
 }
 
 /////// main
@@ -86,7 +90,7 @@ btn_playerOne.addEventListener("click", function(){
 	showMaxScore();
 })
 
-// player One gets score
+// player Two gets score
 btn_playerTwo.addEventListener("click", function(){
 	increaseScoreForPlayerTwo();
 	showMaxScore();
