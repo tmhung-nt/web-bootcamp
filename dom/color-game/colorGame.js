@@ -1,7 +1,7 @@
 var colors;
-var numberOfColors;
+var numSquares;
 var isHardMode = true;
-// console.log(colors); 
+
 var squares = document.querySelectorAll("div.square");
 var pickedColor;
 var colorDisplay = document.querySelector("#colorDisplay");
@@ -9,8 +9,7 @@ var messageDisplay = document.querySelector("#message");
 var spans = document.querySelectorAll("span");
 var h1 = document.querySelector("h1");
 var btnPlayAgain = document.querySelector("#reset");
-var btnEasy = document.querySelector("#easy");
-var btnHard = document.querySelector("#hard");
+var gameModeBtns = document.querySelectorAll(".gameMode");
 
 function pickColor(){
 	//Math.random() returns a float number between 0 and 1
@@ -41,11 +40,53 @@ function generateRandomColors(number){
 function changeColor(color){
 	//loop through all squares
 	//change each color to match given color
-	for (var i = 0; i < numberOfColors; i++){
+	for (var i = 0; i < numSquares; i++){
 		squares[i].style.background = color;
 	}
 	//change color of h1 element to match given color
 	h1.style.background = color;
+}
+
+function setUpHardMode(){
+	numSquares = 6;  
+	for (var i = 0; i < numSquares; i++){
+		squares[i].style.display = "block";
+	}	
+}
+
+function setUpEasyMode() {
+	numSquares = 3;
+	for (var i = 0; i < numSquares; i++){
+		squares[i + numSquares].style.display = "none";
+	}	
+}
+
+function changeGameMode(){	
+	for (var i = 0; i < gameModeBtns.length; i++){
+		gameModeBtns[i].addEventListener("click", function(){
+			// remove selected class out of gameModeButtons and add it in for clicked one
+			gameModeBtns[0].classList.remove("selected");
+			gameModeBtns[1].classList.remove("selected");
+			this.classList.add("selected");
+			// modify number of squares based on which button is clicked
+			this.textContent === "EASY" ? isHardMode = false : isHardMode = true;
+			reset();
+		});
+	}
+}
+
+function fillColorToCells(){
+	for ( var i = 0; i < numSquares; i++){
+		//add initial colors to squares
+		squares[i].style.background = colors[i];
+	}
+}
+
+function addListererToSquares(){
+	//add click listeners to squares
+	for ( var i = 0; i < squares.length; i++){
+		squares[i].addEventListener("click", setUpSquares);
+	}	
 }
 
 function reset(){
@@ -54,82 +95,36 @@ function reset(){
 	messageDisplay.textContent = "";
 	h1.style.background = "steelblue";
 	colors = {};
-	// isHardMode = true;
-	if (isHardMode){
-		btnHard.selected = 'selected';
-		numberOfColors = 6;  //this is number of squares as well
-	} else {
-		btnEasy.selected = 'selected';
-		numberOfColors = 3;
-	}
-	colors = generateRandomColors(numberOfColors);
+	isHardMode ? setUpHardMode() : setUpEasyMode();
+	colors = generateRandomColors(numSquares);
 	console.log("colors: " + colors);
 	fillColorToCells();
 	pickedColor = pickColor();
 	colorDisplay.textContent = pickedColor;
-
 }
 
-function changeGameMode(flag){
-	isHardMode = flag;
-	reset(); //to create new colors and refresh html content 
-	var notEasyModeCells = document.querySelectorAll(".notEasyMode");
-	if (!isHardMode){
-		// hide 3 last celss
-		for (var i = 0; i < numberOfColors; i++){
-			// notEasyModeCells[i].style.background = "#232323";
-			notEasyModeCells[i].style.display = "none";  //https://developer.mozilla.org/en-US/docs/Web/CSS/display
-		}
-		btnEasy.classList.add("selected");
-		btnHard.classList.remove("selected");
+function setUpSquares(){
+	// grab color of clicked square
+	var clickedColor = this.style.background;
+	//compare color to pickedColor
+	if (clickedColor === pickedColor){
+		messageDisplay.textContent = "Correct!";
+		changeColor(pickedColor);
+		btnPlayAgain.textContent = "Play Again?";
 	} else {
-		//enable all 6 cells
-		for (var i = 0; i < notEasyModeCells.length; i++){
-			// notEasyModeCells[i].style.background = "#232323";
-			notEasyModeCells[i].style.display = "block"; //https://developer.mozilla.org/en-US/docs/Web/CSS/display
-		}
-		btnEasy.classList.remove("selected");
-		btnHard.classList.add("selected");
-	}
-}
-
-function fillColorToCells(){
-	for ( var i = 0; i < numberOfColors; i++){
-		//add initial colors to squares
-		squares[i].style.background = colors[i];
-	}
-}
-
-function actionOnClick(){
-	for ( var i = 0; i < squares.length; i++){
-		//add click listeners to squares
-		squares[i].addEventListener("click", function(){
-			//grab color of clicked square
-			var clickedColor = this.style.background;
-			//compare color to pickedColor
-			if (clickedColor === pickedColor){
-				messageDisplay.textContent = "Correct!";
-				changeColor(pickedColor);
-				btnPlayAgain.textContent = "Play Again?";
-			} else {
-				this.style.background = "#232323";  
-				messageDisplay.textContent = "Try Again";
-			}
-		});
+		this.style.background = "#232323";  
+		messageDisplay.textContent = "Try Again";
 	}	
 }
 
+function init(){
+	reset();  // start the game and initial global variables
+	addListererToSquares();	
+}
+
 // main
-reset();  // start the game and initial global variables
+init();
 
-actionOnClick();
-
-btnEasy.addEventListener("click", function(){
-	changeGameMode(false); //false is value of isHardMode variable
-})
-
-btnHard.addEventListener("click", function(){
-	changeGameMode(true); //true is value of isHardMode variable
-})
+changeGameMode(); //add listeners and setUp to change game mode
 
 btnPlayAgain.addEventListener("click", reset);
