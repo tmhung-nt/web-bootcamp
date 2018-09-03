@@ -57,7 +57,7 @@ function reset(){
 	// isHardMode = true;
 	if (isHardMode){
 		btnHard.selected = 'selected';
-		numberOfColors = 6;
+		numberOfColors = 6;  //this is number of squares as well
 	} else {
 		btnEasy.selected = 'selected';
 		numberOfColors = 3;
