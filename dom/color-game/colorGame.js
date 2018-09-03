@@ -52,7 +52,7 @@ function reset(){
 	//initial or reset game's state
 	btnPlayAgain.textContent = "NEW COLORS";
 	messageDisplay.textContent = "";
-	h1.style.background = "#232323";
+	h1.style.background = "steelblue";
 	colors = {};
 	// isHardMode = true;
 	if (isHardMode){
