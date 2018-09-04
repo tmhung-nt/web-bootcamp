@@ -11,3 +11,15 @@ https://www.webdesignerdepot.com/2013/08/10-css-selectors-you-shouldnt-code-with
 1. Get links of all events at https://developer.mozilla.org/en-US/docs/Web/Events
 tr td:nth-of-type(1) a
 //tr/td[1]//a
+
+
+###############jQuery
+1. http://jquery.com
+
+2. http://youmightnotneedjquery.com
+
+3. CDN
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
