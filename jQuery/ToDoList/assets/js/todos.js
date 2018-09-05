@@ -37,8 +37,13 @@ $("input[type='text']").keypress(function(event){
 		// grabbing new todo text from input field
 		var newTodoText = $(this).val();
 		// create a new li and add to ul
-		$("ul").append("<li>" + "<span>X</span> " + newTodoText + "</li>");
+		$("ul").append("<li>" + "<span><i class=\"fas fa-trash\"></i></span> " + newTodoText + "</li>");
 		// clear text in input field after adding new todo
 		$(this).val("");
 	}
+});
+
+
+$(".fas.fa-plus").click(function(){
+	$("input[type='text']").fadeToggle();
 });
