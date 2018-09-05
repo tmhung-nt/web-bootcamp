@@ -15,13 +15,14 @@
 		});		
 	}
 });*/
-// shorter way
-$("li").click(function(){
+// shorter way, "on" method will add listener to all elements (include ones that is added in runtime)
+// but jQuery just can effect on existing element, hence we need to run on() method on <ul> element and add sub element when calling it
+$("ul").on("click", "li", function(){
 	$(this).toggleClass("completed");
 });
 
 // click on X to delete Todo
-$("span").click(function(event){
+$("ul").on("click", "span", function(event){
 	// $(this) here refers to span element
 	$(this).parent().fadeOut(500, function(){
 		// $(this) here refers to li element
@@ -30,3 +31,14 @@ $("span").click(function(event){
 	event.stopPropagation();
 
 })
+
+$("input[type='text']").keypress(function(event){
+	if (event.which === 13){
+		// grabbing new todo text from input field
+		var newTodoText = $(this).val();
+		// create a new li and add to ul
+		$("ul").append("<li>" + "<span>X</span> " + newTodoText + "</li>");
+		// clear text in input field after adding new todo
+		$(this).val("");
+	}
+});
