@@ -6,6 +6,12 @@ https://fontawesome.com/icons?d=gallery
 
 https://uigradients.com/#Hydrogen
 
+https://stackoverflow.com/questions/3057526/framework-vs-toolkit-vs-library
+
+https://www.slant.co/options/2223/alternatives/~aws-cloud-9-alternatives
+
+https://paiza.cloud/containers
+
 ######## CSS selector versus Xpath ########
 https://www.webdesignerdepot.com/2013/08/10-css-selectors-you-shouldnt-code-without/
 
