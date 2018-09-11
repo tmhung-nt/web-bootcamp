@@ -6,16 +6,22 @@ app.get("/", function(req, res){
 });
 
 app.get("/speak/:animal/", function(req, res){
-	var sound = "undefined";
-	var animal = req.params.animal;
-	if (animal === "pig"){
-		sound = "Oink";
-	} else if (animal === "cow"){
-		sound = "Moo";
-	} else if (animal === "dog"){
-		sound = "Woof Woof!";
-	}
-	res.send("The " + animal + " says \"" + sound + "\"");
+	var sounds = {
+		pig: "Oink",
+		cow: "Mow",
+		dog: "Woof Woof!",
+		cat: "Meow!",
+		goldfish: "..."
+	};
+	var animal = req.params.animal.toLowerCase();
+	// if (animal === "pig"){
+	// 	sound = "Oink";
+	// } else if (animal === "cow"){
+	// 	sound = "Moo";
+	// } else if (animal === "dog"){
+	// 	sound = "Woof Woof!";
+	// }
+	res.send("The " + animal + " says \"" + sounds[animal] + "\"");
 });
 
 app.get("/repeat/:verb/:num", function(req, res){
