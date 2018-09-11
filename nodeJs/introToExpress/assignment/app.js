@@ -26,7 +26,7 @@ app.get("/speak/:animal/", function(req, res){
 
 app.get("/repeat/:verb/:num", function(req, res){
 	var verb = req.params.verb;
-	var num = req.params.num;
+	var num = Number(req.params.num);
 	var str = "";
 	for (var i = 0; i < num; i++){
 		str += verb + " ";
