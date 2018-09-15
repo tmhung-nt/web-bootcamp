@@ -11,17 +11,17 @@ app.get("/", function(req, res){
     res.render("home");
 });
 
-// app.get("/friends", function(req, res){
+app.get("/friends", function(req, res){
     
-//     res.render("friends", {friends: friends});
-// });
+    res.render("friends", {friends: friends});
+});
 
-// app.post("/addFriend", function(req, res){
-//     var newFriend = req.body.newFriendName;
-//     friends.push(newFriend);
-//     res.redirect("friends");
-//     // res.send("YOU HAVE REACH POST ROUTE!!");
-// });
+app.post("/addFriend", function(req, res){
+    var newFriend = req.body.newFriendName;
+    friends.push(newFriend);
+    res.redirect("friends");
+    // res.send("YOU HAVE REACH POST ROUTE!!");
+});
 
 app.listen(3000, function(){
 	console.log("Server is started!");
