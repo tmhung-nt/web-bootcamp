@@ -10,6 +10,19 @@ app.get("/anotherPage/:animal", function(req, res){
 	res.render('anotherPage.ejs', {thingVar: req.params.animal})
 });
 
+app.get("/posts", function(req, res){
+	var posts = [
+		{title: "Post 1", author: "W"},
+		{title: "Post 2", author: "A"},
+		{title: "Post 3", author: "T"},
+		{title: "Post 4", author: "A"},
+		{title: "Post 5", author: "R"},
+		{title: "Post 6", author: "U"},
+		{title: "Post 7", author: "S"},
+	];
+	res.render("posts.ejs", {posts: posts})
+})
+
 app.listen(3000, function(){
 	console.log("Server is started!");
 });
