@@ -1,13 +1,16 @@
 var express = require("express");
 var app = express();
 
+app.use(express.static("public"));
+app.set("view engine", "ejs");
+
 app.get("/", function(req, res){
 	// res.send("<h1>Welcome to the homepage</h1>");
-	res.render('home.ejs');
+	res.render('home');
 })
 
 app.get("/anotherPage/:animal", function(req, res){
-	res.render('anotherPage.ejs', {thingVar: req.params.animal})
+	res.render('anotherPage', {thingVar: req.params.animal});
 });
 
 app.get("/posts", function(req, res){
@@ -20,7 +23,7 @@ app.get("/posts", function(req, res){
 		{title: "Post 6", author: "U"},
 		{title: "Post 7", author: "S"},
 	];
-	res.render("posts.ejs", {posts: posts})
+	res.render("posts", {posts: posts});
 })
 
 app.listen(3000, function(){
