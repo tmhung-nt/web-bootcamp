@@ -30,3 +30,8 @@ tr td:nth-of-type(1) a
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+
+
+##########Mongo db
+1. start db
+mongod --dbpath=d:/work/github/web-bootcamp/mongoDB/data
