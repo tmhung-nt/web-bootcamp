@@ -7,7 +7,7 @@ var catSchema = new mongoose.Schema({
     temperament: String
 });
 
-var Cat = mongoose.model("CAt", catSchema);  // model name will be added a "s" at the end by mongoose
+var Cat = mongoose.model("cats", catSchema);  // model name will be added a "s" at the end by mongoose if there is no "s" at the end
 
 // adding a new cat to the DB
 // var george = new Cat({
@@ -35,7 +35,7 @@ Cat.create({
         console.log("Something went WRONG!");
         console.log(err);
     } else {
-        console.log("###############################");
+        console.log("*********************************");
         console.log("New Cats")
         console.log(newCat);
     }
