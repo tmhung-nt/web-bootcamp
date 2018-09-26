@@ -4,10 +4,6 @@
     <div class="ui huge header">
         <h2><%= blog.title %></h2>
     </div>
-    <div class="item">
-            <button><a href="/blogs/<%= blog._id %>/edit">Edit Post</a></button>
-            <button><a href="/blogs/<%= blog._id %>/delete">Delete Post</a></button>            
-    </div>
     <div class="ui top attached">
         <div class="item">
             <img class="ui centered rounded image" src="<%= blog.image %>">
@@ -17,6 +13,10 @@
             <div class="description">
                 <p><%- blog.body %></p>  <!-- use "-" instead of "=" here to evaluate html tags -->
             </div>
+            <form id="delete" action="/blogs/<%= blog._id%>?_method=DELETE" method="POST">
+                <button class="ui red basic button">Delete Post</button>
+            </form>
+            <button class="ui green basic button"><a href="/blogs/<%= blog._id %>/edit">Edit Post</a></button>       
         </div>
     </div>
 </div>
