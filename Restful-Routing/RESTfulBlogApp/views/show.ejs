@@ -1,12 +1,24 @@
 <% include ./partials/header %>
 
-<div>
-    <div class="caption">
-        <h2><%= post.title %></h2>
+<div class="ui main text container segment">
+    <div class="ui huge header">
+        <h2><%= blog.title %></h2>
     </div>
-    <img src="<%= post.image %>">
-    <span><%= post.created %></span>
-    <p><%= post.body %></p>
+    <div class="item">
+            <button><a href="/blogs/<%= blog._id %>/edit">Edit Post</a></button>
+            <button><a href="/blogs/<%= blog._id %>/delete">Delete Post</a></button>            
+    </div>
+    <div class="ui top attached">
+        <div class="item">
+            <img class="ui centered rounded image" src="<%= blog.image %>">
+            <div class="content">
+                <span><%= blog.created.toDateString() %></span>
+            </div>
+            <div class="description">
+                <p><%- blog.body %></p>  <!-- use "-" instead of "=" here to evaluate html tags -->
+            </div>
+        </div>
+    </div>
 </div>
 
 <% include ./partials/footer %> 

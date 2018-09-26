@@ -1,12 +1,14 @@
-var express     = require('express'),
-    bpdyParser  = require('body-parser'),
-    mongoose    = require('mongoose'),
-    app         = express();
+var express         = require('express'),
+    bpdyParser      = require('body-parser'),
+    mongoose        = require('mongoose'),
+    methodOverride  = require("method-override"),
+    app             = express();
 
 //set up express
 app.set("view engine", "ejs");
 app.use(express.static('public'));
 app.use(bpdyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 
 //mongoose schema/model config
 mongoose.connect("mongodb://localhost/restful-blog-app");
@@ -57,8 +59,7 @@ app.post("/blogs", function(req, res){
             console.log(newBlog);
             res.redirect("/blogs");
         }
-    })
-    ;
+    });
 });
 
 //show route
@@ -68,9 +69,38 @@ app.get("/blogs/:id", function(req, res){
     Blog.findById(req.params.id, function(err, foundPost){
         if (err){
             console.log(err);
+            res.redirect("/blogs"); //go back to previous page 
         } else {
             // render show template with that blog
-            res.render("show", {post: foundPost});
+            res.render("show", {blog: foundPost});
+        }
+    });
+});
+
+//edit route - to get edit form
+app.get("/blogs/:id/edit", function(req, res){
+    // find the post with provided ID
+    Blog.findById(req.params.id, function(err, foundPost){
+        if (err){
+            console.log(err);
+            res.redirect("/blogs"); //go back to previous page 
+        } else {
+            // render edit template with that blog
+            res.render("edit", {blog: foundPost});
+        }
+    });
+});
+
+//update route - to update the record in DB
+app.put("/blogs/:id", function(req, res){
+    //update blog
+    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
+        if (err){
+            console.log("ERROR!!!");
+        } else {
+            console.log("----------Editted Post-----------");
+            console.log(updatedBlog);
+            res.redirect("/blogs/" + req.params.id);
         }
     });
 });
