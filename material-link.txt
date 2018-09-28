@@ -35,6 +35,7 @@ tr td:nth-of-type(1) a
 ##########Mongo db
 1. start db
 mongod --dbpath=d:/work/github/web-bootcamp/mongoDB/data
+mongod --dbpath=d:/Learning_Web_Development/learning_web_development/mongoDB/data
 
 
 #########Semantic UI
