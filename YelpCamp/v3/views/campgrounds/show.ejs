@@ -1,4 +1,4 @@
-<% include partial/header %>
+<% include ../partial/header %>
 <h1>This is the show template!</h1>
 
 <p><%= campground.name %></p>
@@ -10,9 +10,7 @@
         <li class="list-group-item"><strong><%= comment.author %> </strong> - <%= comment.text %></li>
         <% }) %>
     </ul>
-    <button type="button" class="btn btn-dark">
-        <a href="/campgrounds/<%= campground._id %>/comments/new">New Comment</a>
-    </button>
+    <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">New Comment</a>
 </div>
 
-<% include partial/footer %>
+<% include ../partial/footer %>
