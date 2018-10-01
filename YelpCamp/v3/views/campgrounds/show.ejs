@@ -1,10 +1,10 @@
 <% include ../partial/header %>
 <h1>This is the show template!</h1>
 
-<p><%= campground.name %></p>
-<img src="<%= campground.image %>">
-<p><%= campground.description %></p>
 <div class="container comments">
+    <p><%= campground.name %></p>
+    <img src="<%= campground.image %>">
+    <p><%= campground.description %></p>
     <ul class="list-group">
         <% campground.comments.forEach(function(comment){ %>
         <li class="list-group-item"><strong><%= comment.author %> </strong> - <%= comment.text %></li>
