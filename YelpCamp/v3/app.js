@@ -79,6 +79,53 @@ app.get("/campgrounds/:id", function(req, res){
     // res.send("This will be the show page one day!"); 
 });
 
+// COMMNET - form to add new comment for a campground
+app.get("/campgrounds/:id/comments/new", function(req, res){
+    // find the campground with provided ID
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if (err){
+            console.log("query error:")
+            console.log(err);
+        } else {
+            // console.log(foundCampground);
+            // render newComment template 
+            res.render("newComment", {campground: foundCampground});
+        }
+    });
+    // res.send("This will be the show page one day!"); 
+});
+
+// Add new comment
+app.post("/campgrounds/:id/comments", function(req, res){
+    //get data from form and add to campgrounds array
+    var author = req.body.authorName;
+    var text = req.body.commentText;
+    var newComment = {text: text, author: author};
+
+    //create new comment, link to according campground then save to db
+    // find the campground with provided ID
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if (err){
+            console.log("query error:")
+            console.log(err);
+        } else {
+            //create a comment
+            Comment.create(newComment, function(err, comment){
+                if (err){
+                    console.log("failed to create new comment");
+                    console.log(err);
+                } else {
+                    foundCampground.comments.push(comment);
+                    foundCampground.save();
+                    console.log("a comment is added")
+                }
+            });
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+});
+
+
 app.listen(3000, function(){
     console.log("YelpCamp server has started!");
 })

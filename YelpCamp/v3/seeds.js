@@ -14,22 +14,22 @@ function seedDB(){
         if (err){
             console.log(err);
         } else {
-            console.log("removed Camground");
+            // console.log("removed Camground");
             Comment.remove({}, function(err){
                 if (err){
                     console.log(err);
                 } else {
-                    console.log("removed comments");
+                    // console.log("removed comments");
                     // add a few campgrounds
                     data.forEach(function(seed){
                         Campground.create(seed, function(err, campground){
                             if (err){
                                 console.log(err);
                             } else {
-                                console.log("Added a campground");
+                                // console.log("Added a campground");
                                 //create a comment
                                 Comment.create({
-                                    text: "Remain valley who mrs uneasy remove wooded him you. Her questions favourite him concealed. We to wife face took he. The taste begin early old why since dried can first. Prepared as or humoured formerly. Evil mrs true get post. Express village evening prudent my as ye hundred forming. Thoughts she why not directly reserved packages you. Winter an silent favour of am tended mutual. ",
+                                    text: "Remain valley who mrs uneasy remove wooded him you.",
                                     author: "seedDB"
                                 }, function(err, comment){
                                     if (err){
@@ -37,12 +37,13 @@ function seedDB(){
                                     } else {
                                         campground.comments.push(comment);
                                         campground.save();
-                                        console.log("a comment is added")
+                                        // console.log("a comment is added")
                                     }
                                 });
                             }
                         })
                     });
+                    console.log("finish seeding DB");
                 }
             });
         }
