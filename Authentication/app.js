@@ -12,7 +12,7 @@ var app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 
-// to use passpost in Express framework
+// to use session while sending/receiving requests
 app.use(require("express-session")({
     secret: "first authentication lesson",
     resave: false,
@@ -45,8 +45,6 @@ app.get("/register", function(req, res){
 });
 //hanlding user sign up
 app.post("/register", function(req, res){
-    req.body.username
-    req.body.password
     User.register(new User({username: req.body.username}), req.body.password, function(err, user){
         if (err){
             console.log(err);
@@ -63,7 +61,7 @@ app.post("/register", function(req, res){
 app.get("/login", function(req, res){
     res.render("login");
 });
-//login logic - middle ware before the final callback is run
+//login logic - middleware before the final callback is run
 app.post("/login", passport.authenticate("local", {
     successRedirect: "/secret",
     failureRedirect: "/login"}), function(req, res){
