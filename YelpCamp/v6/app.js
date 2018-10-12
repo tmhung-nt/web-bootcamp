@@ -146,13 +146,15 @@ app.post("/register", function(req, res){
     var newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function(err, user){
         if (err){
+            console.log("#################register error##################\n\n\n");
             console.log(err);
             return res.render("register");
         }
         passport.authenticate("local")(req, res, function(){
+            console.log("******************************authenticate issue\n\n\n\n")
             res.redirect("/campgrounds");
         })
-    });
+    });   
 });
 
 app.listen(3000, function(){
