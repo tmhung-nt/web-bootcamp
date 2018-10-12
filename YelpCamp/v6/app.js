@@ -1,13 +1,13 @@
-var express     = require("express"),
-    bodyParser  = require("body-parser"),
-    mongoose    = require('mongoose'),
+var express                 = require("express"),
+    bodyParser              = require("body-parser"),
+    mongoose                = require('mongoose'),
     passport                = require('passport'),
     LocalStrategy           = require('passport-local'),
     passportLocalStrategy   = require('passport-local-mongoose'),    
-    Campground  = require("./models/campground"),
-    Comment     = require("./models/comment"),
-    seedDB      = require("./seeds"),
-    User      = require("./models/user");
+    Campground              = require("./models/campground"),
+    Comment                 = require("./models/comment"),
+    seedDB                  = require("./seeds"),
+    User                    = require("./models/user");
 
 mongoose.connect("mongodb://localhost/yelp_camp");
 var app = express();
@@ -28,7 +28,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// inside app.use() in a middleware which will be run for every single routes/requests
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+});
 
 seedDB(); //calling seedDB function to remove all existing campgrounds and comments
 
@@ -37,12 +43,13 @@ app.get("/", function(req, res){
 });
 
 app.get("/campgrounds", function(req, res){
+    // console.log("req.user: " + req.user);
     // get all the campgrounds from DB
     Campground.find({}, function(err, allCampgrounds){
         if (err){
             console.log(err);
         } else {
-            res.render("campgrounds/index", {campgrounds: allCampgrounds});
+            res.render("campgrounds/index", {campgrounds: allCampgrounds, currentUser: req.user});
         }
     });
 
@@ -95,7 +102,7 @@ app.get("/campgrounds/:id", function(req, res){
 // ================================================
 
 // COMMNET - form to add new comment for a campground
-app.get("/campgrounds/:id/comments/new", function(req, res){
+app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req, res){
     // find the campground with provided ID
     Campground.findById(req.params.id, function(err, foundCampground){
         if (err){
@@ -111,7 +118,7 @@ app.get("/campgrounds/:id/comments/new", function(req, res){
 });
 
 // Add new comment
-app.post("/campgrounds/:id/comments", function(req, res){
+app.post("/campgrounds/:id/comments", isLoggedIn, function(req, res){
     //create new comment, link to according campground then save to db
     // find the campground with provided ID
     Campground.findById(req.params.id, function(err, foundCampground){
@@ -137,6 +144,8 @@ app.post("/campgrounds/:id/comments", function(req, res){
 // ===========================
 // AUTH ROUTES 
 // ===========================
+
+// Register routes
 app.get("/register", function(req, res){
     res.render("register");
 });
@@ -151,11 +160,34 @@ app.post("/register", function(req, res){
             return res.render("register");
         }
         passport.authenticate("local")(req, res, function(){
-            console.log("******************************authenticate issue\n\n\n\n")
+            // console.log("******************************authenticate issue\n\n\n\n")
             res.redirect("/campgrounds");
         })
     });   
 });
+// Login routes
+app.get("/login", function(req, res){
+    res.render("login");
+});
+
+//handle login logic
+// app.post("/login", middleware, callback)
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failureRedirect: "/login"}), function(req, res){});
+ 
+// Logout routes
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/campgrounds");
+});
+
+function isLoggedIn(req, res, next){
+    if (req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+};
 
 app.listen(3000, function(){
     console.log("YelpCamp server has started!");
