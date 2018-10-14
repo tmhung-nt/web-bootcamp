@@ -56,38 +56,45 @@ router.post("/", isLoggedIn, function(req, res){
 });
 
 // show form to edit a comment
-router.get("/:id/edit", isLoggedIn, function(req, res){
-        Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
-        foundCampground.find({"comments": req.params.id}, function(err, foundComment){});
-        console.log(foundComment);
-        res.render("comments/edit", {campground: foundCampground, comment: foundComment});
+router.get("/:id/edit", checkCommentOwnership, function(req, res){
+    Comment.findById(req.params.id, function(err, foundComment){
+        if (err){
+            console.log(err);
+            res.redirect("back");
+        } else {
+            var campgroundId = req.baseUrl.split("/")[2];
+            res.render("comments/edit", {comment: foundComment, campgroundId: campgroundId});
+        }
     })
 });
 
 // edit a comment
-router.put("/:id", isLoggedIn, function(req, res){
-    Comment.findById(req.params.id, function(err, foundComment){
-        if (req.user.username === foundComment.author.username){
-            // udpate comment's text
-            foundComment.text = req.body.comment[text];
-            foundComment.save();
+router.put("/:id", checkCommentOwnership, function(req, res){
+    var newComment = {
+        _id: req.params.id,
+        text: req.body.comment.text
+    };
+    Comment.findByIdAndUpdate(req.params.id, newComment, function(err, foundComment){
+        if (err){
+            console.log(err);
+            res.redirect("back");
         } else {
-            console.log("You don't have permission to edit this comment");
+            var campgroundId = req.baseUrl.split("/")[2];
+            res.redirect("/campgrounds/" + campgroundId);
         }
-        res.redirect("/campgrounds/" + req.params.id);
     });
 });
 
 // delete a comment
-router.delete("/:id", isLoggedIn, function(req, res){
-    Comment.findById(req.params.id, function(err, foundComment){
-        if (req.user.username === foundComment.author.username){
-            // delete the comment
-            foundComment.remove();
+router.delete("/:id", checkCommentOwnership, function(req, res){
+    Comment.findByIdAndRemove(req.params.id, function(err, foundComment){
+        if (err){
+            console.log(err);
+            res.redirect("back");
         } else {
-            console.log("You don't have permission to delete this comment");
+            var campgroundId = req.baseUrl.split("/")[2];
+            res.redirect("/campgrounds/" + campgroundId);
         }
-        res.redirect("/campgrounds/" + req.params.id);
     });
 });
 
@@ -95,7 +102,22 @@ function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
         return next();
     }
-    res.redirect("/login");
+    res.redirect("back");
+};
+
+function checkCommentOwnership(req, res, next){
+    if (req.isAuthenticated()){
+        Comment.findById(req.params.id, function(err, foundComment){
+            if (foundComment._id.equals(req.params.id)){
+                next();
+            } else {
+                console.log("You don't have permission to edit this comment!");
+                res.redirect("back");
+            }
+        })
+    } else {
+        redirect("back");
+    }
 };
 
 module.exports = router;

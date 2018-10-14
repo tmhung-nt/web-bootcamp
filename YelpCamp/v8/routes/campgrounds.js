@@ -56,6 +56,7 @@ router.get("/:id", function(req, res){
             // render show template with that campground
             res.render("campgrounds/show", {campground: foundCampground, currentUser: req.user});
         } 
+    });
 });
 
 // ======================Edit Routes======================
@@ -102,7 +103,7 @@ function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
         return next();
     }
-    res.redirect("/login");
+    res.redirect("back");
 };
 
 function checkCampgroundOwnership(req, res, next){
@@ -123,6 +124,6 @@ function checkCampgroundOwnership(req, res, next){
     } else {
         res.redirect("back");
     }
-});
+};
 
 module.exports = router;
