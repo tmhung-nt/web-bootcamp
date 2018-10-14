@@ -1,6 +1,7 @@
 var express = require('express');
 var router  = express.Router();
 var Campground = require("../models/campground");
+var middleware = require("../middlewares");// require("../middlewares/index");
 
 router.get("/", function(req, res){
     // get all the campgrounds from DB
@@ -13,7 +14,7 @@ router.get("/", function(req, res){
     });
 });
 
-router.post("/", isLoggedIn, function(req, res){
+router.post("/", middleware.isLoggedIn, function(req, res){
     //get data from form and add to campgrounds array
     var name = req.body.campgroundName;
     var image = req.body.campgroundImage;
@@ -41,7 +42,7 @@ router.post("/", isLoggedIn, function(req, res){
     });
 });
 
-router.get("/new", isLoggedIn, function(req, res){
+router.get("/new", middleware.isLoggedIn, function(req, res){
     res.render("campgrounds/new");
 });
 
@@ -61,7 +62,7 @@ router.get("/:id", function(req, res){
 
 // ======================Edit Routes======================
 // get edit form
-router.get("/:id/edit", checkCampgroundOwnership, function(req, res){
+router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res){
     // find the post with provided ID
     Campground.findById(req.params.id, function(err, foundCampground){
         if (err){
@@ -75,7 +76,7 @@ router.get("/:id/edit", checkCampgroundOwnership, function(req, res){
 });
 
 // EDIT/UPDATE - modify info of a campground
-router.put("/:id", checkCampgroundOwnership, function(req, res){
+router.put("/:id", middleware.checkCampgroundOwnership, function(req, res){
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground){
         if (err){
             console.log("error while updating");
@@ -88,7 +89,7 @@ router.put("/:id", checkCampgroundOwnership, function(req, res){
 });
 
 // ==========Delete route
-router.delete("/:id", checkCampgroundOwnership, function(req, res){
+router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
     Campground.findByIdAndRemove(req.params.id, function(err, deletedCampground){
         if (err){
             console.log("Campground was not deleted!");
@@ -98,32 +99,5 @@ router.delete("/:id", checkCampgroundOwnership, function(req, res){
         res.redirect("/campgrounds");
     });
 });
-
-function isLoggedIn(req, res, next){
-    if (req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("back");
-};
-
-function checkCampgroundOwnership(req, res, next){
-    if (req.isAuthenticated()){
-        Campground.findById(req.params.id, function(err, foundCampground){
-            if (err){
-                res.redirect("back");
-            } else {
-                // foundCampground.author.id is an object, not string --> can't compare by using "==" or "==="
-                if (foundCampground.author.id.equals(req.user._id)){
-                    // res.render("campgrouds/edit", {campground: foundCampground});
-                    next();
-                } else {
-                    res.redirect("back");
-                }
-            }
-        });
-    } else {
-        res.redirect("back");
-    }
-};
 
 module.exports = router;

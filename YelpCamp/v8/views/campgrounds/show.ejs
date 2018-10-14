@@ -21,7 +21,7 @@
                         <em>Submitted by <%= campground.author.username %></em>
                     </p>
                     <!-- form is not inline element, need to style it by CSS through id='delete-form' -->
-                    <% if ((typeof currentUser !== "undefined") && (campground.author.username === currentUser.username)) {%>
+                    <% if ( currentUser && (campground.author.username === currentUser.username)) {%>
                         <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit Post</a>
                         <form id="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
                             <button class="btn btn-danger">Delete Post</button>
@@ -40,7 +40,9 @@
                         <strong><%= comment.author.username %> </strong>
                         <span class="float-right">10 days ago</span>
                         <p><%= comment.text %></p>
-                        <% if ((typeof currentUser !== "undefined") && comment.author.username === currentUser.username) {%>
+                        <!-- (typeof currentUser !== "undefined") -->
+                        <!-- put only currentUser in the if condition, if there is no logged in user, its value is undefined ==> falsy ==> false -->
+                        <% if ( currentUser && comment.author.id.equals(currentUser.id)) {%>
                             <a class="btn btn-primary" href="/campgrounds/<%= campground._id%>/comments/<%= comment._id %>/edit">Edit Comment</a>
                             <form id="delete-form" action="/campgrounds/<%= campground._id%>/comments/<%= comment._id %>?_method=DELETE" method="POST">
                                 <button class="btn btn-secondary">Delete Comment</button>
