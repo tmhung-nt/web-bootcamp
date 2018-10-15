@@ -12,7 +12,15 @@ var commentRoutes           = require("./routes/comments"),
     campgroundRoutes        = require("./routes/campgrounds"),
     authRoutes              = require("./routes/index");
 
-mongoose.connect("mongodb://localhost/yelp_camp");
+// define variables for starting the app
+var dbUrl       = process.env.DBurl || "mongodb://localhost/yelp_camp";
+var serverPort  = process.env.PORT  || "3000" ;
+var serverIP    = process.env.IP    || "localhost"; 
+
+
+    // mongoose.connect("mongodb://localhost/yelp_camp");
+// mongoose.connect("mongodb://admin:12345678a@ds037508.mlab.com:37508/yelpcamp-v8");
+mongoose.connect(dbUrl);
 var app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -47,10 +55,13 @@ app.use("/", authRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments" ,commentRoutes);
 
-seedDB(); //calling seedDB function to remove all existing campgrounds and comments
+// seedDB(); //calling seedDB function to remove all existing campgrounds and comments
 
 
 
-app.listen(3000, function(){
-    console.log("YelpCamp server has started!");
-})
+// app.listen(3000, function(){
+//     console.log("YelpCamp server has started!");
+// })
+app.listen(serverPort, function(){
+    console.log("The YelpCamp Server Has Startedat IP=" + serverIP + ":" + serverPort);
+ });
