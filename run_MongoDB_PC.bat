@@ -1,1 +1,0 @@
-mongod --dbpath=d:/Learning_Web_Development/learning_web_development/mongoDB/data
