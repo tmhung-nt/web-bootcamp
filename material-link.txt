@@ -42,3 +42,7 @@ mongod --dbpath=d:/Learning_Web_Development/learning_web_development/mongoDB/dat
 
 #########Passport Authentication
 http://toon.io/understanding-passportjs-authentication-flow/
+
+#########full stack learning path
+https://medium.com/coderbyte/a-guide-to-becoming-a-full-stack-developer-in-2017-5c3c08a1600c
+https://classroom.udacity.com/courses/cs101/lessons/48299949/concepts/486985440923 

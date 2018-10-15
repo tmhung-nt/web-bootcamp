@@ -1,12 +1,10 @@
 var express                 = require("express"),
     bodyParser              = require("body-parser"),
     methodOverride          = require("method-override"),
+    flash                   = require("connect-flash"),
     mongoose                = require('mongoose'),
     passport                = require('passport'),
     LocalStrategy           = require('passport-local'),
-    passportLocalStrategy   = require('passport-local-mongoose'),    
-    Campground              = require("./models/campground"),
-    Comment                 = require("./models/comment"),
     seedDB                  = require("./seeds"),
     User                    = require("./models/user");
 
@@ -22,6 +20,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 console.log(__dirname); //the whole absolute path
 app.use(methodOverride("_method"));
+app.use(flash());
 
 // PASSPORT CONFIGURATION
 app.use(require('express-session')({
@@ -38,7 +37,9 @@ passport.deserializeUser(User.deserializeUser());
 
 // inside app.use() in a middleware which will be run for every single routes/requests
 app.use(function(req, res, next){
-    res.locals.currentUser = req.user;
+    res.locals.currentUser  = req.user;
+    res.locals.errorMsg      = req.flash("error");
+    res.locals.successMsg      = req.flash("success");
     next();
 });
 
@@ -46,7 +47,7 @@ app.use("/", authRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments" ,commentRoutes);
 
-// seedDB(); //calling seedDB function to remove all existing campgrounds and comments
+seedDB(); //calling seedDB function to remove all existing campgrounds and comments
 
 
 
