@@ -23,10 +23,13 @@ router.post("/register", function(req, res){
         if (err){
             console.log("#################register error##################\n\n\n");
             console.log(err);
-            return res.render("register");
+            req.flash("error", err.message)
+            // return res.render("register");
+            res.redirect("back");
         }
         passport.authenticate("local")(req, res, function(){
             // console.log("******************************authenticate issue\n\n\n\n")
+            req.flash("success", "Register successfully!")
             res.redirect("/campgrounds");
         })
     });   
@@ -45,6 +48,7 @@ router.post("/login", passport.authenticate("local", {
 // Logout routes
 router.get("/logout", function(req, res){
     req.logout();
+    req.flash("success", "Logged you out!!!")
     res.redirect("/campgrounds");
 });
 
