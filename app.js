@@ -17,9 +17,6 @@ var dbUrl       = process.env.DBurl || "mongodb://localhost/yelp_camp";
 var serverPort  = process.env.PORT  || "3000" ;
 var serverIP    = process.env.IP    || "localhost"; 
 
-
-    // mongoose.connect("mongodb://localhost/yelp_camp");
-// mongoose.connect("mongodb://admin:12345678a@ds037508.mlab.com:37508/yelpcamp-v8");
 mongoose.connect(dbUrl);
 var app = express();
 
