@@ -37,19 +37,8 @@ function initialGame(){
   isGameOver = false;
 }
 
-// to be deleted
 function initialDeck(){
   deck = createDeck();
-  deck = [
-    {suit: 'Clubs', value: 'Four'},
-    {suit: 'Diamonds', value: 'Seven'},
-    {suit: 'Clubs', value: 'Four'},
-    {suit: 'Hearts', value: 'Six'},
-    {suit: 'Spades', value: 'Five'},
-    {suit: 'Clubs', value: 'Three'},
-    {suit: 'Diamonds', value: 'Three'},
-    {suit: 'Diamonds', value: 'Jack'}
-  ];
 }
 
 function startNewGame(){
@@ -79,7 +68,6 @@ function hit(){
 function stay(){
   isGameOver = true;
   determineWinner();
-  // textArea.innerText = showStatus();
 }
 
 initialGame();
@@ -158,37 +146,10 @@ function showStatus(){
                 "(Score: "      + dealerScore + ")\n" +
                 "Player has:\n" + getCardArrayString(playerCards) +
                 "(Score: "      + playerScore + ")";
-  textArea.innerText = currentStatus
-}
-
-function checkForEndGame(){
-  updateScores();
-  if (isGameOver){
-    while (dealerScore < playerScore && dealerScore <= 21 || dealerScore < 15){      
-      dealerCards.push(getNextCard());
-      updateScores();
-    }
-  }
-
-  if (dealerScore >= 15 && playerScore > 15){
-    if (playerScore > 21){
-      isPlayerWon = false;
-      isGameOver = true;
-    } else if (dealerScore > 21){
-      isPlayerWon = true;
-      isGameOver = true;
-    } else if (isGameOver){
-      if (playerScore > dealerScore){
-        isPlayerWon = true;
-      }
-    }
-    if (isPlayerWon){
-      textArea.innerText += "\n PLAYER WINS!!!";
-    } else {
-      textArea.innerText += "\n DEALER WINS!!!";
-    }    
-    initialGame();
-  }
+  // console.log("============showStatus============");
+  // console.log(currentStatus);
+  // console.log("==================================");
+  textArea.innerText = currentStatus;
 }
 
 function determineWinner(){
