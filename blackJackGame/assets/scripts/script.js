@@ -52,16 +52,22 @@ function startNewGame(){
 }
 
 function hit(){
-  if (!isGameOver){
-    playerCards.push(getNextCard());
-    checkForGameOver();
-    showStatus();
-  }
+  playerCards.push(getNextCard());
+  playerScore = getScore(playerCards);
+  checkForEndOfGame();
+  // textArea.innerText = showStatus();
+}
+
+function stay(){
+  isGameOver = true;
+  checkForEndOfGame();
+  // textArea.innerText = showStatus();
 }
 
 initialGame();
 newGameBtn.addEventListener('click', startNewGame);
-
+hitBtn.addEventListener('click', hit);
+stayBtn.addEventListener('click', stay);
 // ==========================
 // card handlers
 // ==========================
@@ -121,6 +127,12 @@ function getScore(cardArray){
   }
 }
 
+function updateScores(){
+  playerScore = getScore(playerCards);
+  dealerScore = getScore(dealerCards);
+  showStatus();
+}
+
 function showStatus(){
   let result =  "Dealer has:\n" + getCardArrayString(dealerCards) +
                 "(Score: "      + dealerScore + ")\n" +
@@ -129,10 +141,35 @@ function showStatus(){
   return result;
 }
 
-function checkForGameOver(){
-  if (playerScore > 21 || dealerScore > 21){
-    isGameOver = true;
+function checkForEndOfGame(){
+  updateScores();
+
+  if (isGameOver){
+    while (dealerScore < playerScore && playerScore <= 21 && dealerScore <= 21){
+      dealerCards.push(getNextCard());
+      updateScores();
+    }
   }
+
+  if (playerScore > 21){
+    isPlayerWon = false;
+    isGameOver = true;
+  } else if (dealerScore > 21){
+    isPlayerWon = true;
+    isGameOver = true;
+  } else if (isGameOver){
+    if (playerScore > dealerScore){
+      isPlayerWon = true;
+    }
+  }
+
+  if (isPlayerWon){
+    textArea.innerText += "\n PLAYER WINS!!!";
+  } else {
+    textArea.innerText += "\n DEALER WINS!!!";
+  }
+
+  initialGame();
 }
 
 function getCardNumericValue(card){
