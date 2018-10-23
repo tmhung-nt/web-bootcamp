@@ -32,8 +32,24 @@ let isGameStarted   = false,
 // dom handlers
 // ==========================
 function initialGame(){
-  hitBtn.style.display = 'none'
-  stayBtn.style.display = 'none'
+  hitBtn.style.display = 'none';
+  stayBtn.style.display = 'none';
+  isGameOver = false;
+}
+
+// to be deleted
+function initialDeck(){
+  deck = createDeck();
+  deck = [
+    {suit: 'Clubs', value: 'Four'},
+    {suit: 'Diamonds', value: 'Seven'},
+    {suit: 'Clubs', value: 'Four'},
+    {suit: 'Hearts', value: 'Six'},
+    {suit: 'Spades', value: 'Five'},
+    {suit: 'Clubs', value: 'Three'},
+    {suit: 'Diamonds', value: 'Three'},
+    {suit: 'Diamonds', value: 'Jack'}
+  ];
 }
 
 function startNewGame(){
@@ -41,26 +57,28 @@ function startNewGame(){
   stayBtn.style.display = 'inline';
   
   isGameStarted = true;
-  deck = createDeck();
+  initialDeck();
+
   playerCards = [getNextCard(), getNextCard()];
   dealerCards = [getNextCard(), getNextCard()];
 
-  dealerScore = getScore(dealerCards);
-  playerScore = getScore(playerCards);
-  
-  textArea.innerText = showStatus();
+  updateScores();  
 }
 
 function hit(){
   playerCards.push(getNextCard());
-  playerScore = getScore(playerCards);
-  checkForEndOfGame();
-  // textArea.innerText = showStatus();
+  updateScores();
+  if (getScore(playerCards) > 21){
+    isGameOver = true;
+    determineWinner();
+  } else {
+    showStatus();
+  }
 }
 
 function stay(){
   isGameOver = true;
-  checkForEndOfGame();
+  determineWinner();
   // textArea.innerText = showStatus();
 }
 
@@ -115,10 +133,12 @@ function getScore(cardArray){
   let score = 0;
   let hasAce = false;
   cardArray.forEach(function(card){
+    let result = "getScore" + " - current card: " + getCardString(card);
     if (card.value === 'Ace'){
       hasAce = true;
     }
     score += getCardNumericValue(card);
+    result += " + current score: " + score;
   });
   if (hasAce && (score + 10 <= 21)){
     return score + 10;
@@ -134,42 +154,77 @@ function updateScores(){
 }
 
 function showStatus(){
-  let result =  "Dealer has:\n" + getCardArrayString(dealerCards) +
+  let currentStatus =   "Dealer has:\n" + getCardArrayString(dealerCards) +
                 "(Score: "      + dealerScore + ")\n" +
                 "Player has:\n" + getCardArrayString(playerCards) +
                 "(Score: "      + playerScore + ")";
-  return result;
+  textArea.innerText = currentStatus
 }
 
-function checkForEndOfGame(){
+function checkForEndGame(){
   updateScores();
-
   if (isGameOver){
-    while (dealerScore < playerScore && playerScore <= 21 && dealerScore <= 21){
+    while (dealerScore < playerScore && dealerScore <= 21 || dealerScore < 15){      
       dealerCards.push(getNextCard());
       updateScores();
     }
   }
 
-  if (playerScore > 21){
-    isPlayerWon = false;
-    isGameOver = true;
-  } else if (dealerScore > 21){
-    isPlayerWon = true;
-    isGameOver = true;
-  } else if (isGameOver){
-    if (playerScore > dealerScore){
+  if (dealerScore >= 15 && playerScore > 15){
+    if (playerScore > 21){
+      isPlayerWon = false;
+      isGameOver = true;
+    } else if (dealerScore > 21){
       isPlayerWon = true;
+      isGameOver = true;
+    } else if (isGameOver){
+      if (playerScore > dealerScore){
+        isPlayerWon = true;
+      }
     }
+    if (isPlayerWon){
+      textArea.innerText += "\n PLAYER WINS!!!";
+    } else {
+      textArea.innerText += "\n DEALER WINS!!!";
+    }    
+    initialGame();
   }
+}
 
-  if (isPlayerWon){
-    textArea.innerText += "\n PLAYER WINS!!!";
-  } else {
-    textArea.innerText += "\n DEALER WINS!!!";
+function determineWinner(){
+  // *** this function is called when playerScore >= 21 or STAND button is clicked *** 
+
+  // user clicks HIT --> add more card --> get current score --> 
+  //  if playerScore <= 21 then out of this function
+  //  if playerScore > 21 
+  //    --> if dealerScore < 15 --> loop (add more card --> get current score) until dealerScore >= 15
+  //     --> if dealerScore <= 21 --> player loses --> end game --> reset game 
+  //      --> else if dealerScore > playerScore --> player wins --> end game --> reset game
+
+  while (dealerScore < 15 || (playerScore <= 21 && dealerScore <= playerScore )){
+      dealerCards.push(getNextCard());
+      updateScores();
   }
+  if (isGameOver){
+    if (dealerScore <= 21){
+      isPlayerWon = false;
+      isGameOver = true;
+    } else if (dealerScore > playerScore){
+      isPlayerWon = true;
+      isGameOver = true;
+    }
+    
+    if (isGameOver && isPlayerWon){
+      textArea.innerText += "\n PLAYER WINS!!!";
+    } else {
+      textArea.innerText += "\n DEALER WINS!!!";
+    }
+    initialGame();
+  }
+}
 
-  initialGame();
+function showCurrentDeck(){
+  console.log("Current Deck before chaning: " + getCardArrayString(deck));
 }
 
 function getCardNumericValue(card){
