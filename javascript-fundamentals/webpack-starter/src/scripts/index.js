@@ -63,3 +63,71 @@ let fn, ln;
 ({fn, ln} = myObj); // put above statement to opening/closing paranthesis to solve the problem
 console.log(firstname, lastname);
 
+console.log("Type conversions");
+console.log("Number.parseFloat('55.88'): Value: " + Number.parseFloat('55.88') + " has type = " + typeof(Number.parseFloat('55.88')));
+console.log("Number.parseInt('55.88'): Value: " + Number.parseInt('55.88') + " has type = " + typeof(Number.parseInt('55.88')));
+let num = 4;
+console.log("num.toString(): Value: " + num.toString() + " has type = " + typeof(num.toString()));
+
+
+console.log("----------------demoRest----------------");
+function demoRest(in1, ... ins){
+    ins.forEach(arg => console.log(arg));
+}
+demoRest(1, 2, 3, 4, 5, 6);
+
+console.log("----------------demoSpread----------------");
+function demoSpread(arr1, arr2, arr3){
+    console.log(arr1, arr2, arr3);
+}
+
+arr = [3, 5, 6, 4, 2];
+demoSpread(... arr);
+console.log("--> demoRest and demoSpread are different with each other at:");
+console.log("           1. function declaration : with and without \"...\"");
+console.log("                   function demoRest(in1, ... ins){}");
+console.log("                   function demoSpread(arr1, arr2, arr3){}");
+console.log("           2. call function        : without and with \"...\"");
+console.log("                   demoRest(1, 2, 3, 4, 5, 6)");
+console.log("                   demoSpread(... arr)");
+
+console.log("######################## Equality Operators");
+console.log(1 == 1);
+console.log(1 != 1);
+console.log(1 == true);
+console.log(1 != true);
+console.log(1 === true);
+console.log(1 !== true);
+console.log("-----------------------------------");
+let id = 123;
+console.log(id == "123");
+console.log(id != "123");
+console.log(id === "123");
+console.log(id !== "123");
+
+console.log("######################## Unary Operators");
+let year = 5;
+console.log("year++ --> increased after getting used");
+console.log(" year = " + year + " | year++ = " + (year++) + " | year = " + year);
+console.log("year++ --> increased before getting used");
+console.log(" year = " + year + " | ++year = " + (++year) + " | year = " + year);
+
+console.log("######################## Logical Operators");
+// Type	        Falsy value
+// Boolean	    false
+// Number	    0 and NaN
+// String	    ''
+// null	        null
+// undefined	undefined
+console.log("-------------------- Falsy and Truthy");
+console.log("-------------------- null is falsy");
+console.log("-------------------- object/func is truthy");
+let userSetting = null;
+let defaultSetting = { name: 'Default'};
+
+console.log( userSetting || defaultSetting);
+
+let bike = null;
+if (!bike){
+    bike = {};
+}
