@@ -86,10 +86,10 @@ demoSpread(... arr);
 console.log("--> demoRest and demoSpread are different with each other at:");
 console.log("           1. function declaration : with and without \"...\"");
 console.log("                   function demoRest(in1, ... ins){}");
-console.log("                   function demoSpread(arr1, arr2, arr3){}");
+console.log("                   function demoSpread(arr1, arr2, arr3){} // pass multiple arguments into function");
 console.log("           2. call function        : without and with \"...\"");
 console.log("                   demoRest(1, 2, 3, 4, 5, 6)");
-console.log("                   demoSpread(... arr)");
+console.log("                   demoSpread(... arr) // (pass an array into function)");
 
 console.log("######################## Equality Operators");
 console.log(1 == 1);
@@ -131,3 +131,88 @@ let bike = null;
 if (!bike){
     bike = {};
 }
+
+console.log("######################## this keyword --> refer to an object (a special object called a context for the function)");
+console.log("######################## this keyword is the context object for a function");
+let a = {
+    carId: 123,
+    getId: function() {
+        return this.carId;
+    }
+};
+
+console.log(a.getId());
+
+console.log("######################## call and apply - there are two ways to call a function");
+console.log("************************ call and apply functions are used to change the value of *this*");
+console.log("------------------------- call function - pass newCar object to function to change its context - BUT can pass arguments along with the new object/context");
+let newCar = { carId: 456};
+console.log(a.getId.call(newCar));  // pass newCar object to function to change its context - BUT can pass arguments along with the new object/context
+console.log("------------------------- apply apply function - pass arguments (should be an ARRAY) - console.log(b.getId.apply(newCar, ['Pass prefix along with new object (context) by call function']));" );
+let b = {
+    carId: 123, 
+    getId: function(prefix){
+        return prefix + " " + this.carId;
+    }
+};
+
+console.log(b.getId.apply(newCar, ['Pass prefix along with new object (context) by call function'])); // pass arguments (should be an ARRAY)
+
+// use Rest param
+console.log("Try to use Rest params with apply function");
+let c = {
+    carId: 123,
+    getId: function(prefix1, prefix2, prefix3){
+        return prefix1 + "-" + prefix2 + "-" + prefix3 + this.carId;
+    }
+};
+
+console.log(c.getId.apply(newCar, ['999', '456', '789']));
+
+
+
+
+
+
+console.log("######################## bind");
+let p = {
+    phoneId: 123,
+    getId: function(){
+        return this.phoneId;
+    }
+};
+
+newCar = { phoneId: 456};
+let newFn = p.getId.bind(newCar); // brand new function is created (copied and assign new context)
+console.log( newFn() );
+
+console.log("######################## arrow function");
+getId = () => 123;
+console.log("No input param: \"getId = () => 123;\"" + "-----> getId()" + "-----> " + getId());
+
+getId = prefix => prefix + 1;
+console.log("Has one input param: " + "\"getId = prefix => prefix + 1;\""+ "-----> getId(123)" + "-----> " + getId(123));
+
+getId = (prefix, suffix) => prefix + 1 + suffix;
+console.log("Has two input params: " + "\"getId = (prefix, suffix) => prefix + 1 + suffix;\""+ "-----> getId(1, 2)" + "-----> " + getId(1, 2));
+
+getId = (prefix, suffix) => {
+    factor = 3;
+    return prefix + factor + suffix;
+};
+console.log("Has {} to add more complex logic inside the function: (do need to add the return keyword)" + "\"getId = (prefix, suffix) => {\n" + 
+"    return prefix + 1 + suffix;\n" + 
+"};\" \n"+ "-----> getId(1, 2)" + "-----> " + getId(1, 2));
+
+console.log("Arrow functions do not hvae their own 'this' value.");
+console.log("'this' refers to the enclosing context.");
+
+
+console.log("######################## default parameters");
+
+let trackCar = function(carId, city = 'NY'){
+    console.log(`Tracking ${carId} in ${city}`);
+};
+
+console.log(trackCar(123));
+console.log(trackCar(123, 'LA'));
