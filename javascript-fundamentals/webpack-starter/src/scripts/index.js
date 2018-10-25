@@ -131,3 +131,40 @@ let bike = null;
 if (!bike){
     bike = {};
 }
+
+console.log("======================== Conditional Operator");
+(3 > 2 ) ? console.log(true) : console.log(false);
+
+console.log( 4 < 5 ? true : false);
+console.log( 4 > 5 ? true : false);
+
+console.log("======================== IIFE's (Immediately Invoked Function Expression)");
+
+(function (){
+    console.log('in function');
+})();
+
+let app = (function (){
+    let message = 'abc';
+    function turnKey(){
+        console.log(message);
+    }
+    return {};
+})();
+
+console.log(app);
+
+console.log("======================== Closure");
+
+let watchId = (function (){
+    let id = 3;
+    let getId = function() {
+        return id;
+    };
+    return {
+        getId: getId  // object's value is a function
+    };
+})();
+
+console.log(watchId.getId);  // watchId.getId return a reference to a function (which is assigned to getId variable)
+console.log(watchId.getId()); // hence we need opening/closing parenthesises to execute the function and get final value
