@@ -1,0 +1,30 @@
+<html>
+
+<body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+<div id="container">
+    <ul id="list">
+        <li><a href="http://domain1.com">Item #1</a></li>
+        <li><a href="/local/path/1">Item #2</a></li>
+        <li><a href="/local/path/2">Item #3</a></li>
+        <li><a href="http://domain4.com">Item #4</a></li>
+    </ul>
+</div>
+<script>
+    $( document ).ready(function() {
+        // Attach a delegated event handler
+        $( "#list" ).on( "click", "a", function( event ) {
+            event.preventDefault();
+            console.log( $( this ).text() );
+        });
+
+        // // Attach a directly bound event handler
+        // $( "#list" ).on( "click", function( event ) {
+        //     event.preventDefault();
+        //     console.log( $( this ).text() );
+        // });
+    })
+</script>
+</body>
+
+</html>
