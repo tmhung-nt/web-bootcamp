@@ -12,4 +12,10 @@ router.get('/column-to-in-statement', function(req, res){
   res.render('utils/columnToIN');
 });
 
+router.get('/generate-import-payroll-file', function(req, res){
+  console.log("api GET generateImportPayrollFile")
+  res.render('utils/genereateImportPayroll');
+});
+ 
+
 module.exports = router;
