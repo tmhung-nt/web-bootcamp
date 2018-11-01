@@ -7,12 +7,12 @@ router.get('/', function(req, res, next) {
   res.render('landing');
 });
 
-router.get('/column-to-in-statement', function(req, res){
+router.get('/col-to-statement', function(req, res){
   console.log("api GET columnToIN")
   res.render('utils/columnToIN');
 });
 
-router.get('/generate-import-payroll-file', function(req, res){
+router.get('/genr-import-payroll', function(req, res){
   console.log("api GET generateImportPayrollFile")
   res.render('utils/genereateImportPayroll');
 });
