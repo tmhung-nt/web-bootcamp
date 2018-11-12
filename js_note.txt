@@ -1,0 +1,4 @@
+-- check falsy/truty
+for (var value of [0, 1, -1, "0", "1", "cat", true, false, undefined, null]) {
+    console.log(`Boolean(${typeof value} ${value}) is ${Boolean(value)}`);
+}

@@ -121,3 +121,18 @@ var filteredList = watchList.map(obj => (
 // Add your code above this line
 
 console.log(filteredList); 
+
+// var rating = [];
+// for(var i=0; i < watchList.length; i++){
+//   rating.push({title: watchList[i]["Title"],  rating: watchList[i]["imdbRating"]});
+// }
+function getTitleAndRating(obj){
+let returnObj = { "title": obj.Title, "raiting": obj.imdbRating };
+return returnObj;
+}
+
+var rating = watchList.map( getTitleAndRating);
+// Add your code above this line
+
+console.log(rating); 
+// console.log(watchList);
