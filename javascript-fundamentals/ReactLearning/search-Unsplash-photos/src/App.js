@@ -67,7 +67,7 @@ class App extends Component {
          .then(resp => {
            console.log(resp.data.results);
            this.setState((prevState)  => ({
-              term: prevState.term,
+              // term: prevState.term, // no need to put previous value here, setState will keep it if not override
               photoList: resp.data.results
             }));
           });
@@ -75,8 +75,8 @@ class App extends Component {
 
   changeSearchTermState = (term) => {
     this.setState((prevState) => ({
-      term: term,
-      photoList: prevState.photoList
+      term: term
+      // ,photoList: prevState.photoList // no need to put previous value here, setState will keep it if not override
     }), this.getUnsplashPhotos);    
   }
 
