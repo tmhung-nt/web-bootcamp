@@ -18,7 +18,7 @@ class SearchBar extends Component {
 
   render(){
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} sytle={{margin: '20px'}}>
         <input size="30" type="text" 
           onChange={(event) => this.setState({termToSearch: event.target.value})}
           value={this.state.termToSearch}
@@ -37,15 +37,23 @@ const PhotoList = (props) => {
     // </div>
     
       <div className="row">
-      {props.pics.map((pic) => <PhotoItem {...pic}/>)}
+        {props.pics.map((pic) => <PhotoItem {...pic}/>)}
       </div>
   )
 }
 
 const PhotoItem = (props) => {
   return (
-    <div className="col-md-3 col-sm-6" > 
-      <img src={props.urls.small} />
+    <div className="col-12 col-sm-6 col-md-4 p-2"> 
+       <div className="d-flex flex-column text-center border height100">
+          <div>
+            <img src={props.urls.small} style={{width: '500px'}}/>
+          </div>
+          <h3>{props.description}</h3>
+          <button className="btn btn-outline-info btn-sm">
+            <a href={props.urls.full}>Larger Image</a>
+          </button>
+       </div>
     </div>
   )
 }
@@ -82,9 +90,11 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
-        <SearchBar term={this.state.term} onSubmitFunction={this.changeSearchTermState}/>
-        <PhotoList pics={this.state.photoList}/>
+      <div className="jumbotron">
+        <div className="container-fluid">
+          <SearchBar term={this.state.term} onSubmitFunction={this.changeSearchTermState}/>
+          <PhotoList pics={this.state.photoList}/>
+        </div>
       </div>
     );
   }
