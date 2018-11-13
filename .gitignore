@@ -2,3 +2,4 @@
 javascript-fundamentals/old-testing-helper/
 node_modules/
 package-lock.json
+yarn.lock
