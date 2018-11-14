@@ -6,7 +6,7 @@ class Form extends React.Component  {
     }
 
     onFieldChange = (event) => {
-        this.setState({event.target.name: event.target.value})
+        this.setState({[event.target.name]: event.target.value})
     }
 
 	render() {
