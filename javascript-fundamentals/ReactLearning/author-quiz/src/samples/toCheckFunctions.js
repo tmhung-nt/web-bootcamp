@@ -1,9 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import AuthorQuiz from './AuthorQuiz';
-import * as serviceWorker from './serviceWorker';
-import {shuffle, sample} from 'underscore';
+const {_} = require('underscore');
 
 const authors = [
     {
@@ -57,8 +52,8 @@ const getTurnData = (authors) => {
     const allBooks = authors.reduce( (acc, currentAuthor) => {
         return acc.concat(currentAuthor.books);        
     }, []);
-    const fourRandomBook = shuffle(allBooks).slice(0, 4);
-    const answer = sample(fourRandomBook);
+    const fourRandomBook = _.shuffle(allBooks).slice(0, 4);
+    const answer = _.sample(fourRandomBook);
     const authorToAsk = authors.find(author => author.books.some(title => title === answer));
     askedQuiz.push(authorToAsk);
     return {
@@ -68,19 +63,9 @@ const getTurnData = (authors) => {
     }
 }
 
-state = getTurnData(authors);
-
-
-const onAnswerSelected = (answer) => {
-  const isCorrect = state.author.books.some(book => {
-    console.log(`book: ${book} - answer: ${answer}`);
-    return book === answer;
-  });
-  state.highlight = isCorrect ? 'correct' : 'wrong';
-  render();
-}
-
 const toNextQuiz = () => {
+  console.log("------------- toNextQuiz --------------");
+
   remainingQuiz = remainingQuiz.filter(author => {
     let isKept = true;
     for (let i=0; i< askedQuiz.length; i++){
@@ -92,18 +77,32 @@ const toNextQuiz = () => {
     }
     return isKept;
   });
-  console.log(remainingQuiz);
+  console.log(remainingQuiz.length);
   state = getTurnData(remainingQuiz);
-  render();
+  // render();
 }
 
-const render = () => {
-  // ReactDOM.render(<AuthorQuiz authors={authors}/>, document.getElementById('root'));
-  ReactDOM.render(<AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} toNextQuiz={toNextQuiz}/>, document.getElementById('root'));
-}
 
-render();
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+state = getTurnData(remainingQuiz);
+toNextQuiz();
+toNextQuiz();
+toNextQuiz();
+
+// let arr1 = [1, 2, 3, 4, 6];
+// let arr2 = [2, 6];
+// let arr3 = [1, 3, 4];
+
+// const getSubArr = (arr1, arr2) => {
+//   return arr1.filter(element => {
+//     for (let i=0; i< arr2.length; i++){
+//       if (arr2[i] === element){
+//         return false;  
+//       }
+//     }
+//     return false; // should not remove this element
+//   });
+// }
+
+// console.log(getSubArr(arr1, arr2));
+

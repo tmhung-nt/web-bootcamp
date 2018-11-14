@@ -2,6 +2,7 @@ import React from 'react';
 // import logo from './logo.svg';
 import './AuthorQuiz.css';
 import './bootstrap.min.css';
+import PropTypes from 'prop-types';
 
 const Hero = (props) => {
   return (
@@ -14,27 +15,51 @@ const Hero = (props) => {
   )
 }
 
-const Turn = (turnData) => {
+const Turn = ({author, books, highlight, onAnswerSelected}) => {
+  const highlightToBgColor = (highlight) => {
+    const mapping = {
+      none: '',
+      correct: 'green',
+      wrong: 'red'
+    }
+    return mapping[highlight];
+  }
+
   return (
-    <div key={turnData.author.name} className="row turn" style={{backgroundColor: "white"}}>
+    <div key={author.name} className="row turn" style={{backgroundColor: highlightToBgColor(highlight)}}>
       <div className="col-4 offset-1">
-        <img src={turnData.author.imageUrl} className="authorImage" alt="Author"/>
+        <img src={author.imageUrl} className="authorImage" alt="Author"/>
       </div>
       <div className='col-6'>
-        {turnData.books.map(title => <Book key={title} title={title}/>)}
+        {books.map(title => <Book key={title} title={title} onClick={onAnswerSelected}/>)}
       </div>
     </div>
   );
 }
 
-const Book = (book) => {
+Turn.prototype = {
+  author: PropTypes.shape(
+    {name: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    imageSource: PropTypes.string.isRequired,
+    books: PropTypes.array.isRequired}
+  ),
+  books: PropTypes.array.isRequired,
+  onAnswerSelected: PropTypes.func.isRequired,
+  highlight: PropTypes.oneOf(['', 'correct', 'wrong']).isRequired
+}
+
+const Book = ({title, onClick}) => {
   return (
-    <p className="answer">{book.title}</p>
-  )
+    // <p className="answer" onClick={() => onClick(title)}>{title}</p>
+    <p className="answer" onClick={onClick.bind(this, title)}>{title}</p>
+  )  // equivalent to calling .bind() "onClick = onClick.bind(this, title)"
 }
 
 const Continue = (props) => {
-  return (<div/>);
+  return (
+    <button className="btn btn-primary" style={{marginLeft: '85%'}} onClick={props.toNextQuiz}>Next</button>
+  );
 }
 
 const Footer = (props) => {
@@ -55,7 +80,7 @@ const AuthorQuiz = (turnData) => {
         <Hero />
         {/* {props.authors.map(author => <Turn author={author}/>)} */}
         <Turn {...turnData}/>
-        <Continue />
+        <Continue toNextQuiz={turnData.toNextQuiz}/>
         <Footer />
       </div>
     );
