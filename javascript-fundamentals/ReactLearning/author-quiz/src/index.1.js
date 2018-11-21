@@ -7,8 +7,7 @@ const update = (model = {time: 0, running: false}, intent) => {
     'STOP': (model) => Object.assign(model, {running: false}),
     'START': (model) => Object.assign(model, {running: true})
   };
-  // return ( updates[intent] || ( () => model ))(model);
-  return updates[intent](model);
+  return ( updates[intent] || ( () => model ))(model);
   // after "||" is just a function that will be execute after then with input param is 'model'
 }
 
@@ -50,10 +49,7 @@ const render = () => {
        document.getElementById('root'));
 }
 
-// render()
-
 container.subscribe(render);
-  // container.dispatch('TICK');
 
 setInterval( () => {
   container.dispatch('TICK');
