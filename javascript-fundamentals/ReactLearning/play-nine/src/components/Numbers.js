@@ -14,7 +14,7 @@ const Numbers = (props) => {
         {Numbers.list.map((number, i) =>
           <span key={i} 
             onClick={ () => props.selectNumber(number)}
-            className={numberClassName(number)}>
+            className={numberClassName(number)} >
             {number} 
           </span>
         )}

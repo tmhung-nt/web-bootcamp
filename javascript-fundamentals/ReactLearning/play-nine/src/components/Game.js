@@ -25,20 +25,48 @@ const possibleCombinationSum = function(arr, n) {
 
 class Game extends React.Component {
 	state = {
-    selectedNumbers: []
+    selectedNumbers: [],
+    randomNumberOfStars: 1 + Math.floor(Math.random()*9),
+    isAnswerCorrect: null
   };
 
+  selectNumber = (clickNumber) => {    
+    this.setState((prevState) => {
+      return  prevState.selectedNumbers.indexOf(clickNumber) >= 0 
+              ? {} 
+              : { selectedNumbers: prevState.selectedNumbers.concat([clickNumber]), isAnswerCorrect: null};
+    })
+  }
   
+  unselectNumber = (clickNumber) => {
+    this.setState( (prevState) => {
+        const prevSelectedNumbers = prevState.selectedNumbers;
+        const indexOfClickNumber = prevSelectedNumbers.indexOf(clickNumber);
+        return {
+          selectedNumbers: prevSelectedNumbers.slice(0, indexOfClickNumber).concat(prevSelectedNumbers.slice(indexOfClickNumber + 1)),
+          isAnswerCorrect: null
+        };
+    })    
+  }
+
+  checkAnswer = (selectedNumbers, randomNumberOfStars) => {
+    const answer = selectedNumbers.reduce( (acc, curVal) => {
+      acc += curVal;
+      return acc;
+    }, 0);
+    this.setState( () => {return answer === randomNumberOfStars ? { isAnswerCorrect: true } : { isAnswerCorrect: false };})
+     
+  }
   
   render() {
-    const { selectedNumbers } = this.state;
+    const { selectedNumbers, randomNumberOfStars } = this.state;
     return (
       <div className="container">
         <h3>Play Nine</h3>
         <hr />
         <div className="row">
-          <Stars />
-          <Buttons />
+          <Stars numberOfStars={randomNumberOfStars}/>
+          <Buttons checkAnswer={this.checkAnswer} {...this.state} />
           <Answer selectedNumbers={selectedNumbers} unselectNumber={this.unselectNumber}/>
         </div>
         <br />
