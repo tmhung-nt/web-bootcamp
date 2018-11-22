@@ -8,7 +8,7 @@ const store = createStore(reducer, initialState);
 class App extends Component {
   // remove state out of App component as we are going to let Redux manages it
   render() {
-    return <HelloWorld tech={this.state.tech} />;
+    return <HelloWorld tech={store.getState().tech} />;
   }
 }
 
