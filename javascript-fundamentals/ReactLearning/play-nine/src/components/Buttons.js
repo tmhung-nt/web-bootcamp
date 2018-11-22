@@ -4,10 +4,14 @@ const Buttons = (props) => {
   let buttonToBeRendered;
   switch (props.isAnswerCorrect) {
     case true :
-      buttonToBeRendered = <button className="btn btn-success"><i className="fa fa-check"></i></button>;
+      buttonToBeRendered = <button className="btn btn-success" onClick={props.toNextQuiz}>
+           <i className="fa fa-check"></i>
+        </button>;
       break;
     case false :
-      buttonToBeRendered = <button className="btn btn-danger"><i className="fa fa-times"></i></button>;
+      buttonToBeRendered = <button className="btn btn-danger">
+            <i className="fa fa-times"></i>
+        </button>;
       break;
     default: 
       buttonToBeRendered = <button onClick={ () => props.checkAnswer(props.selectedNumbers, props.randomNumberOfStars)}>=</button>
@@ -15,7 +19,8 @@ const Buttons = (props) => {
   return (
     <div className="col-2 text-center">
       {buttonToBeRendered}
-      <p>{props.isAnswerCorrect === null ? 'Click To Verify Answer' : ''}</p>
+      <br/><br/>
+      <button className="btn btn-warning"  onClick={props.redraw}><i className="fa fa-refresh">{props.remainingDraw}</i></button>
     </div>
   );
 };
