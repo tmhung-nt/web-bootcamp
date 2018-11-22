@@ -7,6 +7,7 @@ const Stars = (props) => {
       {range(props.numberOfStars).map(i =>
         <i key={i} className="fa fa-star"></i>
       )}
+      <p>Stars: {props.numberOfStars}</p>
     </div>
   );
 };

@@ -1,8 +1,10 @@
 import React from 'react';
+import { range } from 'lodash';
 import Stars from './Stars';
 import Numbers from './Numbers';
 import Buttons from './Buttons';
 import Answer from './Answer';
+import DoneFrame from './DoneFrame';
 
 const possibleCombinationSum = function(arr, n) {
   if (arr.indexOf(n) >= 0) { return true; }
@@ -24,15 +26,18 @@ const possibleCombinationSum = function(arr, n) {
 
 
 class Game extends React.Component {
-	state = {
+	state = Game.initialGame();
+
+  static randomNumber = () => 1 + Math.floor(Math.random()*9);
+
+  static initialGame = () => ({
     selectedNumbers: [],
     randomNumberOfStars: Game.randomNumber(),
     usedNumbers: [],
     isAnswerCorrect: null,
-    remainingDraw: 5
-  };
-
-  static randomNumber = () => 1 + Math.floor(Math.random()*9);
+    remainingDraw: 20,
+    gameState: null
+  });
 
   selectNumber = (clickNumber) => {    
     this.setState((prevState) => {
@@ -58,8 +63,7 @@ class Game extends React.Component {
       acc += curVal;
       return acc;
     }, 0);
-    this.setState( () => {return answer === randomNumberOfStars ? { isAnswerCorrect: true } : { isAnswerCorrect: false };})
-     
+    this.setState( () => {return answer === randomNumberOfStars ? { isAnswerCorrect: true } : { isAnswerCorrect: false };}, this.isGameOver)     
   }
   
   toNextQuiz = () => {
@@ -69,25 +73,41 @@ class Game extends React.Component {
       selectedNumbers: [],
       isAnswerCorrect: [],
       randomNumberOfStars: Game.randomNumber()} : {}      
-      });
+      }, this.isGameOver);
   }
 
   redraw = () => {
-    this.setState( prevState => (
+    this.setState( prevState => 
       {
-        randomNumberOfStars: Game.randomNumber(), 
-        selectedNumbers: [], 
-        isAnswerCorrect: null,
-        remainingDraw: prevState.remainingDraw - 1
-      }));
+        return prevState.remainingDraw > 0 
+            ? { randomNumberOfStars: Game.randomNumber(), 
+                selectedNumbers: [], 
+                isAnswerCorrect: null,
+                remainingDraw: prevState.remainingDraw - 1 }
+            : {} }, this.isGameOver);
   }
 
   isGameOver = () => {
-    
+    this.setState(prevState => {
+      const remainingNumbers = range(1, 10).filter( number => prevState.usedNumbers.indexOf(number) === -1);
+      const hasPossibleCombination = possibleCombinationSum(remainingNumbers, prevState.randomNumberOfStars);
+      console.log(`remainingNumbers = ${remainingNumbers}`);
+      console.log(`hasPossibleCombination = ${hasPossibleCombination}`);
+      if (prevState.remainingDraw >= 0 && prevState.usedNumbers.length === 9 ) {
+        return { gameState: 'Win!'};
+      }
+      if (prevState.remainingDraw === 0 && !hasPossibleCombination) {
+        return { gameState: 'Game Over!'} ;
+      }
+    })
+  }
+
+  resetGame = () => {
+    this.setState(Game.initialGame())
   }
 
   render() {
-    const { selectedNumbers, randomNumberOfStars, usedNumbers } = this.state;
+    const { selectedNumbers, randomNumberOfStars, usedNumbers, gameState } = this.state;
     return (
       <div className="container">
         <h3>Play Nine</h3>
@@ -98,7 +118,7 @@ class Game extends React.Component {
           <Answer selectedNumbers={selectedNumbers} unselectNumber={this.unselectNumber}/>
         </div>
         <br />
-        <Numbers selectedNumbers={selectedNumbers} selectNumber={this.selectNumber} usedNumbers={usedNumbers} />
+        { !gameState  ? <Numbers selectedNumbers={selectedNumbers} selectNumber={this.selectNumber} usedNumbers={usedNumbers} /> : <DoneFrame gameState={gameState} resetGame={this.resetGame}/>   }        
       </div>
     );
   }
