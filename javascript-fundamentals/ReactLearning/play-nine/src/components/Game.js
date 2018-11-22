@@ -48,14 +48,7 @@ class Game extends React.Component {
   }
   
   unselectNumber = (clickNumber) => {
-    this.setState( (prevState) => {
-        const prevSelectedNumbers = prevState.selectedNumbers;
-        const indexOfClickNumber = prevSelectedNumbers.indexOf(clickNumber);
-        return {
-          selectedNumbers: prevSelectedNumbers.slice(0, indexOfClickNumber).concat(prevSelectedNumbers.slice(indexOfClickNumber + 1)),
-          isAnswerCorrect: null
-        };
-    })    
+    this.setState( (prevState) => ({selectedNumbers: prevState.selectedNumbers.filter(number => number != clickNumber)}));    
   }
 
   checkAnswer = (selectedNumbers, randomNumberOfStars) => {
@@ -93,7 +86,7 @@ class Game extends React.Component {
       const hasPossibleCombination = possibleCombinationSum(remainingNumbers, prevState.randomNumberOfStars);
       console.log(`remainingNumbers = ${remainingNumbers}`);
       console.log(`hasPossibleCombination = ${hasPossibleCombination}`);
-      if (prevState.remainingDraw >= 0 && prevState.usedNumbers.length === 9 ) {
+      if (prevState.usedNumbers.length === 9 ) {
         return { gameState: 'Win!'};
       }
       if (prevState.remainingDraw === 0 && !hasPossibleCombination) {
