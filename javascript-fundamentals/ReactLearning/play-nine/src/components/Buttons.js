@@ -4,7 +4,7 @@ const Buttons = (props) => {
   let buttonToBeRendered;
   switch (props.isAnswerCorrect) {
     case true :
-      buttonToBeRendered = <button className="btn btn-success" onClick={props.toNextQuiz}>
+      buttonToBeRendered = <button className="btn btn-success" onClick={props.acceptAnswer}>
            <i className="fa fa-check"></i>
         </button>;
       break;
@@ -20,7 +20,7 @@ const Buttons = (props) => {
     <div className="col-2 text-center">
       {buttonToBeRendered}
       <br/><br/>
-      <button className="btn btn-warning"  onClick={props.redraw}><i className="fa fa-refresh">{props.remainingDraw}</i></button>
+      <button className="btn btn-warning"  onClick={props.getAnotherRandomStars}><i className="fa fa-refresh">{props.remainingDraw}</i></button>
     </div>
   );
 };

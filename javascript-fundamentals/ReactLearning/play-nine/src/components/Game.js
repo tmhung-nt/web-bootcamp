@@ -35,7 +35,7 @@ class Game extends React.Component {
     randomNumberOfStars: Game.randomNumber(),
     usedNumbers: [],
     isAnswerCorrect: null,
-    remainingDraw: 20,
+    remainingDraw: 5,
     gameState: null
   });
 
@@ -48,7 +48,7 @@ class Game extends React.Component {
   }
   
   unselectNumber = (clickNumber) => {
-    this.setState( (prevState) => ({selectedNumbers: prevState.selectedNumbers.filter(number => number != clickNumber)}));    
+    this.setState( (prevState) => ({selectedNumbers: prevState.selectedNumbers.filter(number => number !== clickNumber)}));    
   }
 
   checkAnswer = (selectedNumbers, randomNumberOfStars) => {
@@ -59,7 +59,7 @@ class Game extends React.Component {
     this.setState( () => {return answer === randomNumberOfStars ? { isAnswerCorrect: true } : { isAnswerCorrect: false };}, this.isGameOver)     
   }
   
-  toNextQuiz = () => {
+  acceptAnswer = () => {
     this.setState((prevState) => {
       return prevState.isAnswerCorrect ? 
       {usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
@@ -69,7 +69,7 @@ class Game extends React.Component {
       }, this.isGameOver);
   }
 
-  redraw = () => {
+  getAnotherRandomStars = () => {
     this.setState( prevState => 
       {
         return prevState.remainingDraw > 0 
@@ -84,8 +84,7 @@ class Game extends React.Component {
     this.setState(prevState => {
       const remainingNumbers = range(1, 10).filter( number => prevState.usedNumbers.indexOf(number) === -1);
       const hasPossibleCombination = possibleCombinationSum(remainingNumbers, prevState.randomNumberOfStars);
-      console.log(`remainingNumbers = ${remainingNumbers}`);
-      console.log(`hasPossibleCombination = ${hasPossibleCombination}`);
+
       if (prevState.usedNumbers.length === 9 ) {
         return { gameState: 'Win!'};
       }
@@ -107,7 +106,7 @@ class Game extends React.Component {
         <hr />
         <div className="row">
           <Stars numberOfStars={randomNumberOfStars}/>
-          <Buttons checkAnswer={this.checkAnswer} toNextQuiz={this.toNextQuiz} redraw={this.redraw} {...this.state} />
+          <Buttons checkAnswer={this.checkAnswer} acceptAnswer={this.acceptAnswer} getAnotherRandomStars={this.getAnotherRandomStars} {...this.state} />
           <Answer selectedNumbers={selectedNumbers} unselectNumber={this.unselectNumber}/>
         </div>
         <br />
