@@ -23,7 +23,7 @@ https://medium.freecodecamp.org/a-software-engineering-survival-guide-fe3eafb471
 https://reacttraining.com/react-router/web/guides/basic-components  
 
 # Sourcecode of Redux tutorial from its author  
-1. Getting started with Redux
+1. Getting started with Redux  
 https://egghead.io/courses/getting-started-with-redux  
 https://github.com/eggheadio-projects/getting-started-with-redux  
 2. Building React Applications with Idiomatic Redux  
