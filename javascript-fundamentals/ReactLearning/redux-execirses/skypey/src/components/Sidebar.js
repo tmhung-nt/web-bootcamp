@@ -5,7 +5,7 @@ import User from '../containers/User';
 const Sidebar = (props) => {
   return (
     <aside className="Sidebar">
-      {props.contacts.map(contact => <User key={contact.userId} {...contact}/>)}
+      {props.contacts.map(contact => <User key={contact.user_id} {...contact}/>)}
     </aside>
   );
 };

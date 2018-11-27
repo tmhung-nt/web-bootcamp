@@ -3,7 +3,12 @@ import contacts from './contacts';
 import activeUserId from './activeUserId';
 import messages from './messages';
 import typing from './typing';
+
 import { combineReducers }  from 'redux';
+
+// initialState is created from reducers
+// each sub reducer create a part of the total app's state
+// each sub reducer is a function actually
 
 export default combineReducers({ 
     user,
@@ -17,4 +22,7 @@ export default combineReducers({
 // export default combineReducers({
 //     user: user,
 //     contacts: contacts
+//     messages: messages
+//     activeUserId: activeUserId
+//     typing: typing
 //   })
