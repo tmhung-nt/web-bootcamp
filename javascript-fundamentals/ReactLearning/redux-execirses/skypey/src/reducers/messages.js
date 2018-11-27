@@ -1,5 +1,5 @@
 import { getMessages } from '../static-data';
 
-export default (state = getMessages(1), action) => {
+export default (state = getMessages(10), action) => {
     return state;
 };

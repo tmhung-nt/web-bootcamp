@@ -1,19 +1,24 @@
-import React from "react";
-import { values } from 'lodash';
+import React, { Component } from "react";
+import "./Chats.css";
 
-const Chats = ({userConversation}) => {
-  console.log('receiving in Chats');
-  console.log(userConversation);
-
+const Chat = ({ message }) => {
+  const { text, is_user_msg } = message;
   return (
-    <div>
-      { values(userConversation)
-        .map(message => message.is_user_msg ? <p style={{textAlign: 'right'}}>{message.text}</p>
-                                    : <p style={{textAlign: 'left'}}>{message.text}</p>)
-        
-      }
-    </div>
-  )
-}
+    <span className={`Chat ${is_user_msg ? "is-user-msg" : ""}`}>{text}</span>
+  );
+};
 
+
+class Chats extends Component {
+  render() {
+    return (
+      <div className="Chats">
+        {this.props.activeMessages.map(message => (
+          <Chat message={message} key={message.number} />
+          ))}
+      </div>
+    );
+  }
+}
+    
 export default Chats;
