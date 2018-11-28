@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import AvailableCounters from '../components/AvailabeCounters';
+import CounterList from '../components/CounterList';
 import Controler from './Controler';
 
 class App extends Component {
@@ -8,7 +8,7 @@ class App extends Component {
     const counters = this.props.state;
     return (
       <div className="App">
-        <AvailableCounters {...counters} />
+        <CounterList {...counters} />
         <Controler />
       </div>
     );

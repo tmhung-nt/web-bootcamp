@@ -1,4 +1,4 @@
-import { ADD_COUNTER, REMOVE_COUNTER } from "../constants/actions-types";
+import { ADD_COUNTER, REMOVE_COUNTER, INCREMENT, DECREMENT } from "../constants/actions-types";
 import _ from 'lodash';
 
 const initialState = {
@@ -9,6 +9,7 @@ const initialState = {
         }  
     }
 };
+let counterToBeChanged;
 
 export default (state = initialState, action) => {
     switch(action.type){
@@ -26,7 +27,35 @@ export default (state = initialState, action) => {
             };
             return returnObj;
         case REMOVE_COUNTER:
-            return _.omit(state.counters, action.payload); //action.payload is counterId
+            const lastCounterId = +Object.keys(state.counters).pop();
+            const counterListAfterRemoved = _.omit(state.counters, lastCounterId); 
+            return {
+                counters:{
+                    ...counterListAfterRemoved
+                }
+            }
+        case INCREMENT:
+            counterToBeChanged = state.counters[action.counterId];
+            return {
+                counters: {
+                    ...state.counters,
+                    [action.counterId]:{
+                        ...counterToBeChanged,
+                        value: counterToBeChanged.value + 1
+                    }
+                }
+            }
+        case DECREMENT:
+            counterToBeChanged = state.counters[action.counterId];
+            return {
+                counters: {
+                    ...state.counters,
+                    [action.counterId]:{
+                        ...counterToBeChanged,
+                        value: counterToBeChanged.value - 1
+                    }
+                }
+            }
         default:
             return state;
     }
