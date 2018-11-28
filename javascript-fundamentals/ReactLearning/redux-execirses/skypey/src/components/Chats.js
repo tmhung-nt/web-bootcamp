@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import "./Chats.css";
+import store from "../store";
+import { editMessage } from "../actions";
 
 const Chat = ({ message }) => {
-  const { text, is_user_msg } = message;
+  const { text, is_user_msg, number: msgId  } = message;
+  const activeUserId = store.getState().activeUserId;
   return (
-    <span className={`Chat ${is_user_msg ? "is-user-msg" : ""}`}>{text}</span>
+    <span className={`Chat ${is_user_msg ? "is-user-msg" : ""}`} onDoubleClick={handleEditMsg.bind(null, { activeUserId, msgId, text, is_user_msg})}>{text}</span>
   );
 };
+
+const handleEditMsg = ({activeUserId, msgId, text, is_user_msg}) => {
+  if (is_user_msg){
+    store.dispatch(editMessage(activeUserId, msgId, text));
+  }
+}
 
 
 class Chats extends Component {
@@ -28,7 +37,7 @@ class Chats extends Component {
     return (
       <div className="Chats" ref={this.chatsRef}>
         {this.props.activeMessages.map(message => (
-          <Chat message={message} key={message.number} />
+          <Chat message={message} activeUserid={this.props.activeUserid} key={message.number} />
           ))}
       </div>
     );

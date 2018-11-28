@@ -1,6 +1,6 @@
 import React from "react";
 import store from "../store";
-import { setTypingValue, sendMessage } from "../actions";
+import { setTypingValue, sendMessage, updateSelectedMessage } from "../actions";
 import "./MessageInput.css";
 
 const MessageInput = ({ typingValue }) => {
@@ -13,8 +13,12 @@ const MessageInput = ({ typingValue }) => {
 
   const handleSubmit = e => {
       e.preventDefault();
-      const {typing, activeUserId} = state;
-      store.dispatch(sendMessage(typing, activeUserId));
+      const {typing, activeUserId, updateMessage } = state;
+      if (!updateMessage.isEditting){
+         store.dispatch(sendMessage(typing, activeUserId));
+      } else {
+        store.dispatch(updateSelectedMessage(typing, activeUserId, updateMessage.messageId));
+      }
   }
 
   return (
