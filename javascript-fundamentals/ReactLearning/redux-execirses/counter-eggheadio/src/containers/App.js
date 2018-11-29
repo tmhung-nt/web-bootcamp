@@ -2,17 +2,24 @@ import React, { Component } from 'react';
 import './App.css';
 import CounterList from '../components/CounterList';
 import Controler from './Controler';
+import store from '../store';
+import { connect } from 'react-redux';
 
 class App extends Component {
-  render() {
-    const counters = this.props.state;
+  render() {  
     return (
       <div className="App">
-        <CounterList {...counters} />
+        <CounterList {...this.props} />
         <Controler />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => state;
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
