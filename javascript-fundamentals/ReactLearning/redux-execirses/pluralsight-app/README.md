@@ -10,4 +10,7 @@ Refactor to use latest React/React-Router/Redux version as of Nov 30, 2018
 
 
 ## For references
-https://codeburst.io/a-quick-intro-to-reacts-props-children-cb3d2fce4891
+1. Props.children  
+https://codeburst.io/a-quick-intro-to-reacts-props-children-cb3d2fce4891  
+2. Debug from Visual Code  
+https://medium.com/@auchenberg/live-edit-and-debug-your-react-apps-directly-from-vs-code-without-leaving-the-editor-3da489ed905f
