@@ -9,7 +9,10 @@ class App extends React.Component {
     return (
       <div className="container-fluid">
         <Header/>
-        {this.props.children}  
+        {this.props.children  /* App's props.children is passed from the props of Provider Component */}  
+        {/* we should include children here to pass it down to other components???*/}
+        {/* explaination can be found here */}
+        {/* https://codeburst.io/a-quick-intro-to-reacts-props-children-cb3d2fce4891 */}
       </div>
     );
   }
