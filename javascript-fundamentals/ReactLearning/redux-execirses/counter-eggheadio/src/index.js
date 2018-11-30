@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './containers/App';
 import store from './store';
+import { Provider } from 'react-redux';
 
 const render = () => {
-    const state = store.getState();
-    console.log('CURRENT STATE:')  || console.log(state);
-    ReactDOM.render(<App state={state}/>, document.getElementById('root'));
+    ReactDOM.render(
+        (<Provider store={store}>
+            <App/>
+         </Provider>),
+        document.getElementById('root'));
 };
-render(store.getState());
+render();
 
 store.subscribe(render);
 

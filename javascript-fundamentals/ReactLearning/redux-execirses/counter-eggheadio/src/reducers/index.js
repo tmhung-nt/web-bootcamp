@@ -1,62 +1,70 @@
 import { ADD_COUNTER, REMOVE_COUNTER, INCREMENT, DECREMENT } from "../constants/actions-types";
 import _ from 'lodash';
 
+let counterID;
+const addNewCounter = (id) => ({
+    id,
+    value: 0
+})
+
+
 const initialState = {
-    counters: {
-        0: {
-            id: 0,
-            value: 0
-        }  
-    }
-};
-let counterToBeChanged;
+    counters: [ 
+        addNewCounter(0)
+    ],
+    allCounterIDs: [0]
+}
 
 export default (state = initialState, action) => {
     switch(action.type){
         case ADD_COUNTER:
-            const nextCounterId = +Object.keys(state.counters).pop() + 1;
-            const counters = state.counters;
+            const nextCounterId = state.allCounterIDs.length;
             const returnObj = {
-                counters: {
-                    ...counters,
-                    [nextCounterId]:{
-                        id: nextCounterId,
-                        value: 0
-                    }
+                allCounterIDs: state.allCounterIDs.concat([nextCounterId]),
+                counters:{
+                    ...state.counters,
+                    [nextCounterId]: addNewCounter(nextCounterId)
                 }
+
             };
             return returnObj;
         case REMOVE_COUNTER:
-            const lastCounterId = +Object.keys(state.counters).pop();
+            const lastCounterId = state.allCounterIDs.length - 1;
             const counterListAfterRemoved = _.omit(state.counters, lastCounterId); 
             return {
+                allCounterIDs: state.allCounterIDs.slice(0, lastCounterId),
                 counters:{
                     ...counterListAfterRemoved
                 }
             }
         case INCREMENT:
-            counterToBeChanged = state.counters[action.counterId];
+            counterID = state.counters[action.counterId];
             return {
+                ...state,
                 counters: {
                     ...state.counters,
                     [action.counterId]:{
-                        ...counterToBeChanged,
-                        value: counterToBeChanged.value + 1
+                        ...counterID,
+                        value: counterID.value + 1
                     }
                 }
             }
         case DECREMENT:
-            counterToBeChanged = state.counters[action.counterId];
+            counterID = state.counters[action.counterId];
             return {
+                ...state,
                 counters: {
                     ...state.counters,
                     [action.counterId]:{
-                        ...counterToBeChanged,
-                        value: counterToBeChanged.value - 1
+                        ...counterID,
+                        value: counterID.value - 1
                     }
                 }
             }
         default:
-            return state;
+            return {
+                ...state,
+                counters: _.keyBy(state.counters,'id')
+            };
     }
 }
