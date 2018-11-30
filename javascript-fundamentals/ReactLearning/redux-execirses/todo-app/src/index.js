@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore, combineReducers} from 'redux';
+import { devToolsEnhancer } from 'redux-devtools-extension';
+
 /*
  * We will be explaining the code below
  * in the following lessons. For now,
@@ -146,14 +148,16 @@ const visibilityFilter = (state = Filters.SHOW_ALL, action) => {
   }
 }
 
+let toBeReturned;
 const todos = (state = [], action) => {
   switch (action.type) {
   case ADD_TODO:
-    return [...state, {
+    toBeReturned = [...state, {
       text: action.text,
       id: action.id,
       completed: false
     }];
+    return toBeReturned;
   case TOGGLE_TODO:
     return state.map(todo =>
       todo.id === action.id ?
@@ -174,7 +178,7 @@ const todoApp = combineReducers({
  * Go!
  */
 
-const store = createStore(todoApp);
+const store = createStore(todoApp, devToolsEnhancer());
 const dispatch = (action) => {
   store.dispatch(action);
   console.log('----------------') || displayInPreview('----------------');
