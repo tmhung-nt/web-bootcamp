@@ -60,12 +60,14 @@ class CoursesPage extends React.Component {
     );
   }
 }
-
+// props validation
 CoursesPage.propTypes = {
     createCourse: propTypes.func.isRequired,
     courses: propTypes.array.isRequired
 }
 
+
+// redux connect
 const mapStateToProps = (state, ownProps) => {
     return {
         courses: state.courses
