@@ -13,6 +13,7 @@ class App extends React.Component {
         {/* we should include children here to pass it down to other components???*/}
         {/* explaination can be found here */}
         {/* https://codeburst.io/a-quick-intro-to-reacts-props-children-cb3d2fce4891 */}
+        {/* The React docs say that you can use props.children on components that represent ‘generic boxes’ and that ‘don’t know their children ahead of time’. */}
       </div>
     );
   }
