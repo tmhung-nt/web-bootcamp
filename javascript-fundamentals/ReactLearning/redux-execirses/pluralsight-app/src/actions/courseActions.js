@@ -1,4 +1,4 @@
-import courseApi from '../api/mockCourseApi';
+import courseApi from '../services/api/mockCourseApi';
 import * as types from "../constants/action-types";
 
 export const loadCourses = () => {
@@ -9,16 +9,16 @@ export const loadCourses = () => {
     }
 }
 
-export const loadCoursesSuccess = courses => {
+const loadCoursesSuccess = courses => {
     return {
         type: types.LOAD_COURSES_SUCCESS,
         courses
     }
 }
 
-export const loadCoursesErros = (error) => {
-    return {
-        type: types.LOAD_COURSES_ERROR,
-        error
-    }
-}
+// const loadCoursesErrors = (error) => {
+//     return {
+//         type: types.LOAD_COURSES_ERROR,
+//         error
+//     }
+// }
