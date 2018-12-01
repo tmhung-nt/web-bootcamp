@@ -17,7 +17,7 @@ class CoursesPage extends React.Component {
   }
 
   onClickSave = () => {
-      this.props.actions.createCourse(this.state.course);
+      this.props.createCourse(this.state.course);
       this.setState({course: {
           title: ''
       }});
@@ -62,7 +62,7 @@ class CoursesPage extends React.Component {
 }
 
 CoursesPage.propTypes = {
-    actions: propTypes.object.isRequired,
+    createCourse: propTypes.func.isRequired,
     courses: propTypes.array.isRequired
 }
 
@@ -74,9 +74,7 @@ const mapStateToProps = (state, ownProps) => {
 
 // manual mapping, wrap createCourse to props instead 
 const matpDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(courseActions, dispatch)
-    }
+    return bindActionCreators(courseActions, dispatch);
 }
 
 export default connect(mapStateToProps, matpDispatchToProps)(CoursesPage);
