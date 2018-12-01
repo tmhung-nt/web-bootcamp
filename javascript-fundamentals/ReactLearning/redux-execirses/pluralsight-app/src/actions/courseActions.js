@@ -1,11 +1,11 @@
-import courseApi from '../services/api/mockCourseApi';
 import * as types from "../constants/action-types";
+import axios from 'axios';
 
 export const loadCourses = () => {
     return dispatch => {
-        return courseApi.getAllCourses().then(courses => {
-            dispatch(loadCoursesSuccess(courses));
-        }).catch(error => console.log(error));
+        return axios.get(types.FETCH_COURSES_URL)
+                    .then(response => dispatch(loadCoursesSuccess(response.data)))
+                    .catch(error => console.log(error));
     }
 }
 
