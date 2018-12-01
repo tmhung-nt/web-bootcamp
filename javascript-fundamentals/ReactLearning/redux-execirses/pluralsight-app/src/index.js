@@ -6,9 +6,11 @@ import './index.css';
 import routes from './routes';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
+import { loadCourses } from './actions/courseActions';
 
 
 const store = configureStore();  // no initialState here as the rootReducer already gaves one, we will override that if pass a state from here
+store.dispatch(loadCourses())
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
