@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import propTypes from 'prop-types'
 
 const SelectInput = ({name, label, onChange, defaultOption, value, error, options}) => {
   return (
@@ -24,13 +25,13 @@ const SelectInput = ({name, label, onChange, defaultOption, value, error, option
 };
 
 SelectInput.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  defaultOption: PropTypes.string,
-  value: PropTypes.string,
-  error: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.object)
+  name: propTypes.string.isRequired,
+  label: propTypes.string.isRequired,
+  onChange: propTypes.func.isRequired,
+  defaultOption: propTypes.string,
+  value: propTypes.string,
+  error: propTypes.string,
+  options: propTypes.arrayOf(propTypes.object)
 };
 
 export default SelectInput;
