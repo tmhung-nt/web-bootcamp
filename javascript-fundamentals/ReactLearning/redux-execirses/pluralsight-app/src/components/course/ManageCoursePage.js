@@ -3,6 +3,7 @@ import propTypes from 'prop-types'
 import { connect } from 'react-redux';
 import * as courseActions from '../../actions/courseActions';
 import CourseForm from './CourseForm';
+import { bindActionCreators } from 'C:/Users/Hung Tran Manh/AppData/Local/Microsoft/TypeScript/3.1/node_modules/redux';
 
 class ManageCoursePage extends Component {
     state = {
@@ -18,6 +19,11 @@ class ManageCoursePage extends Component {
             course: course
         })
     }
+
+    saveCourseHandler = e => {
+        e. preventDefault();
+        this.props.saveCourse(this.state.course);
+    }
     render() {
         return (
             <CourseForm 
@@ -25,6 +31,7 @@ class ManageCoursePage extends Component {
                 course={this.state.course}
                 errors={this.state.erorrs} 
                 onChange={this.updateCourseState}
+                onSave
             />
         );
     }
@@ -55,6 +62,10 @@ function mapStateToProps(state) {
         course: course,
         authors: authorFormattedForDropDown
     };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(courseActions, dispatch);
 }
 
 export default connect(
