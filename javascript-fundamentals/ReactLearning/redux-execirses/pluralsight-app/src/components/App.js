@@ -3,6 +3,7 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './common/Header';
+import { withRouter } from 'react-router-dom';
 
 // children comfrom react-router
 
@@ -21,11 +22,9 @@ class App extends React.Component {
   }
 }
 
-// App.propTypes = {
-//   history: propTypes.object.isRequired,
-//   location: propTypes.object.isRequired,
-//   match: propTypes.object.isRequired
-// };
+App.propTypes = {
+  location: propTypes.bool.isRequired
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -33,4 +32,5 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App)); // need to wrap connected component by withRouter in order to navigate by clicking on Nav Links 
+// https://reacttraining.com/react-router/web/guides/redux-integration
