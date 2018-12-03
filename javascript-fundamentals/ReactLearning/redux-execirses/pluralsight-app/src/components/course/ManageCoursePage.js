@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import * as courseActions from '../../actions/courseActions';
 import CourseForm from './CourseForm';
 import { bindActionCreators } from 'redux';
+import toastr from 'toastr';
 
 class ManageCoursePage extends Component {
     state = {
         course: Object.assign({}, this.props.course),
-        erorrs: {}
+        erorrs: {},
+        saving: false
     }
 
     // componentDidUpdate will be called everytime the props is changed
@@ -33,11 +35,18 @@ class ManageCoursePage extends Component {
 
     saveCourseHandler = e => {
         e.preventDefault();
+        this.setState({saving: true})
         this.props.actions.saveCourse(this.state.course)
-            .then( () => this.redirect());
+            .then( () => this.redirect())
+            .catch(error => {
+                toastr.error(error);
+                this.setState({saving: false});
+            });
     }
 
     redirect = () => {
+        this.setState({saving: false});
+        toastr.success("Course saved!")
         this.props.history.push('/courses');
     }
 
@@ -49,6 +58,7 @@ class ManageCoursePage extends Component {
                 errors={this.state.erorrs} 
                 onChange={this.updateCourseState}
                 onSave={this.saveCourseHandler}
+                saving={this.state.saving}
             />
         );
     }
