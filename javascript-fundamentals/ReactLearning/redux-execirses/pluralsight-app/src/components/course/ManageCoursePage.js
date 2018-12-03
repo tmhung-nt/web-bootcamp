@@ -33,9 +33,14 @@ class ManageCoursePage extends Component {
 
     saveCourseHandler = e => {
         e.preventDefault();
-        this.props.actions.saveCourse(this.state.course);
+        this.props.actions.saveCourse(this.state.course)
+            .then( () => this.redirect());
+    }
+
+    redirect = () => {
         this.props.history.push('/courses');
     }
+
     render() {
         return (
             <CourseForm 
