@@ -4,7 +4,7 @@ import propTypes from 'prop-types'
 const TextInput = ({name, label, onChange, placeholder, value, error}) => {
   let wrapperClass = 'form-group';
   if (error && error.length > 0) {
-    wrapperClass += " " + 'has-error';
+    wrapperClass += ' has-error';
   }
 
   return (
@@ -29,7 +29,10 @@ TextInput.propTypes = {
   label: propTypes.string.isRequired,
   onChange: propTypes.func.isRequired,
   placeholder: propTypes.string,
-  value: propTypes.string,
+  value: propTypes.oneOfType([
+    propTypes.string.isRequired,
+    propTypes.number.isRequired
+  ]),
   error: propTypes.string
 };
 
