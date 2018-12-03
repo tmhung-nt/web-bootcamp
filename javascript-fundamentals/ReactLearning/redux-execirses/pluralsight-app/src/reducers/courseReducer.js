@@ -11,9 +11,11 @@ export default (state = initialState.courses, action) => {
                 Object.assign({}, action.course)
             ];
         case types.UPDATE_COURSE_SUCCESS:
+            // const index = state.findIndex( course => course.id === action.course.id);
+
             return [
-                ...state.filter(course => course.id !== action.course.id),
-                Object.assign({}, action.course)
+                ...state.map(course => {return course.id === action.course.id  ? action.course : course})
+                // Object.assign({}, action.course)
             ]
         default:
             return state;

@@ -1,6 +1,9 @@
 // This component handles the App template used on every page.
 import React from 'react';
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from './common/Header';
+import { withRouter } from 'react-router-dom';
 
 // children comfrom react-router
 
@@ -8,7 +11,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        <Header/>
+        <Header loading={this.props.loading} />
         {this.props.children  /* App's props.children is passed from the props of Provider Component */}  
         {/* we should include children here to pass it down to other components???*/}
         {/* explaination can be found here */}
@@ -19,10 +22,15 @@ class App extends React.Component {
   }
 }
 
-// App.propTypes = {
-//   history: PropTypes.object.isRequired,
-//   location: PropTypes.object.isRequired,
-//   match: PropTypes.object.isRequired
-// };
+App.propTypes = {
+  location: propTypes.bool.isRequired
+};
 
-export default App;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    loading: state.ajaxCallsInProgress > 0
+  }
+}
+
+export default withRouter(connect(mapStateToProps)(App)); // need to wrap connected component by withRouter in order to navigate by clicking on Nav Links 
+// https://reacttraining.com/react-router/web/guides/redux-integration
