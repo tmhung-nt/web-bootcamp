@@ -3,12 +3,23 @@ import propTypes from 'prop-types'
 import { connect } from 'react-redux';
 import * as courseActions from '../../actions/courseActions';
 import CourseForm from './CourseForm';
-import { bindActionCreators } from 'C:/Users/Hung Tran Manh/AppData/Local/Microsoft/TypeScript/3.1/node_modules/redux';
+import { bindActionCreators } from 'redux';
 
 class ManageCoursePage extends Component {
     state = {
         course: Object.assign({}, this.props.course),
         erorrs: {}
+    }
+
+    // componentDidUpdate will be called everytime the props is changed
+    componentWillReceiveProps(nextProps) {
+        console.log(`this.props.course`) || console.log(this.props.course);
+        console.log(`nextProps.course`) || console.log(nextProps.course)
+        // this.setState({couse: Object.assign({}, nextProps.course)})
+        if (this.props.course.id !== nextProps.course.id) {
+            // necessary to populate form when existing course is loaded directly
+            this.setState({course: Object.assign({}, nextProps.course)})
+        }
     }
 
     updateCourseState = (e) =>{
@@ -21,8 +32,9 @@ class ManageCoursePage extends Component {
     }
 
     saveCourseHandler = e => {
-        e. preventDefault();
-        this.props.saveCourse(this.state.course);
+        e.preventDefault();
+        this.props.actions.saveCourse(this.state.course);
+        this.props.history.push('/courses');
     }
     render() {
         return (
@@ -31,7 +43,7 @@ class ManageCoursePage extends Component {
                 course={this.state.course}
                 errors={this.state.erorrs} 
                 onChange={this.updateCourseState}
-                onSave
+                onSave={this.saveCourseHandler}
             />
         );
     }
@@ -39,23 +51,30 @@ class ManageCoursePage extends Component {
 
 ManageCoursePage.propTypes = {
     course: propTypes.object.isRequired,
-    authors: propTypes.array.isRequired
+    authors: propTypes.array.isRequired,
+    actions: propTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
-    let course = {
-        id: '',
-        watchHref: '',
-        title: '',
-        authorId: '',
-        length: '',
-        category: ''
-    };
+// Pull in the React Router context so router is available on this.context.router.
+ManageCoursePage.contextTypes = {
+    router: propTypes.object.isRequired
+};
+
+const getCourseById = (courses, id) => {
+    const course = courses.filter(course => course.id === id);
+    return course ? course[0] : null; //since filter returns an array, need to get the first index out
+}
+
+
+const mapStateToProps = (state, ownProps) => {
+    let course = {id: '', watchHref: '', title: '', authorId: '', length: '', category: ''};
+    let courseId = ownProps.match.params.id;
+    course =  courseId && state.courses.length > 0 ? getCourseById(state.courses, courseId ) : course; // if there is no courseId --> user is going to create new course here
 
     const authorFormattedForDropDown = state.authors.map(author => {
         return {
-            value: author.id,
-            text: author.firstName + ' ' + author.lastName
+            value: author.firstName,
+            text: author.firstName
         }
     })
     return {
@@ -65,9 +84,11 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(courseActions, dispatch);
+    return {
+        actions: bindActionCreators(courseActions, dispatch)
+    };
 }
 
 export default connect(
-    mapStateToProps,
+    mapStateToProps, mapDispatchToProps
 )(ManageCoursePage);

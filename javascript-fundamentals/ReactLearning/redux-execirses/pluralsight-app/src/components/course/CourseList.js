@@ -7,6 +7,7 @@ const CourseList = ({courses}) => {
         <table className="table">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th></th>
                     <th>Title</th>
                     <th>Author</th>
@@ -15,7 +16,7 @@ const CourseList = ({courses}) => {
                 </tr>
             </thead>
             <tbody>
-                {courses.map((course, index) => <CourseRow key={index} course={course} />)}
+                {courses.map((course, index) => <CourseRow key={index} course={course} index={index}/>)}
             </tbody>
         </table>
     )
