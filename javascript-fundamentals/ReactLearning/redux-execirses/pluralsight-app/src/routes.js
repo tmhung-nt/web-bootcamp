@@ -4,6 +4,7 @@ import App from './components/App';
 import HomePage from './components/home/HomePage';
 import AboutPage from './components/about/AboutPage';
 import CoursesPage from './components/course/CoursePage';
+import ManageCoursePage from './components/course/ManageCoursePage';
 
 export default (
     <App>
@@ -12,6 +13,8 @@ export default (
             <Route exact path="/home" component={HomePage} />
             <Route exact path="/about" component={AboutPage} />
             <Route exact path="/courses" component={CoursesPage} />
+            <Route exact path="/course" component={ManageCoursePage} />
+            <Route exact path="/course/:id" component={ManageCoursePage} />
         </Switch>        
     </App>
 );

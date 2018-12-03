@@ -12,13 +12,20 @@ class CoursesPage extends React.Component {
       )
   }
 
-
+  redirectToAddCoursePage = () => {
+      this.props.history.push('/course')
+  }
   render() {
     const {courses} = this.props;
     return (
       <div>
         <h1>Courses</h1>
-        <CourseList courses={courses}/>
+        <input  type="submit"
+                value="Add Course"
+                className="btn btn-primary"
+                onClick={this.redirectToAddCoursePage}
+        />
+        <CourseList courses={courses} />
       </div>
     );
   }
@@ -33,7 +40,8 @@ CoursesPage.propTypes = {
 // redux connect
 const mapStateToProps = (state, ownProps) => {
     return {
-        courses: state.courses
+        courses: state.courses,
+        authors: state.authors
     }
 }
 
