@@ -1,9 +1,11 @@
 import * as types from "../constants/action-types";
 import axios from 'axios';
+import { beginAjaxCall } from './ajaxStatusActions';
 
 let authors;
 export const loadAuthors = () => {
     return dispatch => {
+        dispatch(beginAjaxCall());
         return axios.get(types.FETCH_COURSES_URL) // get courses first then parse author list from there
                     .then(response => {
                         authors = response.data.map((course, index ) => ({firstName: course.authorId, id: index}));

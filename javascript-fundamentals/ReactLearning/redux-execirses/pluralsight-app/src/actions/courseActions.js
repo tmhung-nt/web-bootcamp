@@ -1,9 +1,11 @@
 import * as types from "../constants/action-types";
 import axios from 'axios';
 import courseApi from '../services/api/mockCourseApi';
+import { beginAjaxCall } from './ajaxStatusActions';
 
 export const loadCourses = () => {
     return dispatch => {
+        dispatch(beginAjaxCall());
         return axios.get(types.FETCH_COURSES_URL)
                     .then(response => dispatch(loadCoursesSuccess(response.data)))
                     .catch(error => console.log(error));
@@ -31,6 +33,7 @@ export function createCourseSuccess(course) {
 
 export function saveCourse(course) {
     return function (dispatch, getState) {
+      dispatch(beginAjaxCall());
       return courseApi.saveCourse(course).then(course => {
         course.id ? dispatch(updateCourseSuccess(course)) :
           dispatch(createCourseSuccess(course));
