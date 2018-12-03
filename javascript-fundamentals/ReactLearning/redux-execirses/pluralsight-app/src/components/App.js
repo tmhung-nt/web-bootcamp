@@ -1,5 +1,7 @@
 // This component handles the App template used on every page.
 import React from 'react';
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from './common/Header';
 
 // children comfrom react-router
@@ -8,7 +10,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        <Header/>
+        <Header loading={this.props.loading} />
         {this.props.children  /* App's props.children is passed from the props of Provider Component */}  
         {/* we should include children here to pass it down to other components???*/}
         {/* explaination can be found here */}
@@ -20,9 +22,15 @@ class App extends React.Component {
 }
 
 // App.propTypes = {
-//   history: PropTypes.object.isRequired,
-//   location: PropTypes.object.isRequired,
-//   match: PropTypes.object.isRequired
+//   history: propTypes.object.isRequired,
+//   location: propTypes.object.isRequired,
+//   match: propTypes.object.isRequired
 // };
 
-export default App;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    loading: state.ajaxCallsInProgress > 0
+  }
+}
+
+export default connect(mapStateToProps)(App);
